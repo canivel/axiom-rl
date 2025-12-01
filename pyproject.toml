@@ -1,0 +1,67 @@
+[project]
+name = "axiom-rl"
+version = "0.1.0"
+description = "Self-Improving Reasoning via Verifiable Value Functions"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Danilo Canivel"}
+]
+requires-python = ">=3.10"
+keywords = ["llm", "reinforcement-learning", "code-generation", "self-improvement"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "torch>=2.0.0",
+    "torchvision",
+    "torchaudio",
+    "transformers>=4.37.0",
+    "accelerate>=0.25.0",
+    "peft>=0.7.0",
+    "datasets>=2.14.0",
+]
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu121" }
+torchvision = { index = "pytorch-cu121" }
+torchaudio = { index = "pytorch-cu121" }
+
+[[tool.uv.index]]
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+explicit = true
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "ruff>=0.1.0",
+]
+quantization = [
+    "bitsandbytes>=0.41.0",
+]
+
+[project.scripts]
+axiom-pipeline = "scripts.run_pipeline:main"
+axiom-train = "scripts.run_training:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["axiom"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]

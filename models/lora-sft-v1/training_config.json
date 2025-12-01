@@ -1,0 +1,8 @@
+{
+  "base_model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+  "lora_r": 16,
+  "lora_alpha": 32,
+  "num_epochs": 3,
+  "learning_rate": 0.0002,
+  "solutions_path": "data\\synthetic\\solutions_baseline.jsonl"
+}
