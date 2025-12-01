@@ -74,6 +74,8 @@ This creates a **self-improvement loop** where:
 
 ## 🚀 Roadmap
 
+### Completed Phases
+
   - [x] **Phase 1: The Verifier (Ground Truth)**
       - Implement a secure, robust Python execution sandbox.
       - Create a test-harness for LeetCode-style algorithmic problems.
@@ -81,65 +83,35 @@ This creates a **self-improvement loop** where:
       - Integrate an inference engine (e.g., vLLM/HuggingFace).
       - Implement "Best-of-N" sampling to generate candidate solutions.
   - [x] **Phase 3: The Loop (Data Factory)**
-      - Automate the pipeline: Prompt -\> Generate -\> Verify -\> Save.
+      - Automate the pipeline: Prompt → Generate → Verify → Save.
       - Create a dataset of "Self-Solved" problems.
   - [x] **Phase 4: The Trainer (Optimization)**
       - Implement LoRA-based SFT training on synthetic data.
       - Compare Model N+1 vs Model N performance.
 
-# Phase 5: Scale the Problem Set
+### Upcoming Phases
 
-**Goal:** Move from 10 hand-crafted problems to hundreds/thousands.
+  - [ ] **Phase 0: The Cold Start (Stability)**
+      - Create a "Teacher" dataset using a strong model (GPT-4o/DeepSeek-V3).
+      - Generate high-quality reasoning traces to prime the model before self-improvement.
+      - Teach the model *how* to reason before rewarding it for reasoning correctly.
 
-| **Option** | **Approach** | **Effort** |
-|--------------------------------|--------------------------------|----------|
-| **A. LeetCode Dataset** | Use existing datasets (APPS, HumanEval, MBPP) | Low |
-| **B. Procedural Generation** | Generate problems programmatically (sorting variations, graph problems, etc.) | Medium |
-| **C. LLM-Generated Problems** | Use a strong model to generate problems + test cases, verify with execution | Medium |
+  - [ ] **Phase 5: Procedural Generation (Infinite Dataset)**
+      - Build a procedural problem generator for infinite training data.
+      - Generate problems with perfect ground truth (e.g., math expressions, RPN, logic).
+      - Enable observation of "Grokking" phenomenon with sufficient data scale.
 
+  - [ ] **Phase 6: The Grokking Experiment (Science Core)**
+      - Train on procedurally generated data across 100+ iterations.
+      - Plot Train Accuracy vs Test Accuracy to observe generalization.
+      - Prove that verifiable RL causes faster "Grokking" than standard fine-tuning.
 
-# Phase 6: Progressive Difficulty (Curriculum Learning)
-
-**Goal:** Model N+1 should solve harder problems than Model N.
-
-* **Iteration 1:** Easy problems only → Model N+1
-
-* **Iteration 2:** Easy + Medium → Model N+2
-
-* **Iteration 3:** Easy + Medium + Hard → Model N+3
-
-This tests whether self-improvement compounds over iterations.
-
-# Phase 7: Held-Out Evaluation
-
-**Goal:** Prove the model generalizes, not just memorizes.
-
-* Split problems into train/test sets.
-
-* Never show test problems during training.
-
-* **Measure:** "Does Model N+1 solve *unseen* problems better than Model N?"
-
-# Phase 8: Multi-Iteration Loop
-
-**Goal:** Run the full loop multiple times automatically.
-```python
-for i in range(N):
-    solutions = generate(model_i, problems)
-    verified = verify(solutions)
-    model_{i+1} = train(model_i, verified)
-```
-**Track performance curve across iterations.**
-
-# Phase 9: Expand to Math/Reasoning
-
-**Goal:** Prove the approach works beyond code.
-
-* **Math problems** with SymPy verification
-
-* **Logic puzzles** with formal verification
-
-* **Theorem proving** with Lean/Coq
+  - [ ] **Phase 7: Replay Buffer (Catastrophic Forgetting)**
+      - Implement mixed training data strategy:
+        - 50% New self-solved data (current loop)
+        - 40% Best historical successes
+        - 10% Cold start data (formatting stability)
+      - Prevent model from "chasing its tail" during multi-iteration training.
 
 ## 🛠️ Tech Stack
 
