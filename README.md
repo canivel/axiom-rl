@@ -87,6 +87,59 @@ This creates a **self-improvement loop** where:
       - Implement LoRA-based SFT training on synthetic data.
       - Compare Model N+1 vs Model N performance.
 
+# Phase 5: Scale the Problem Set
+
+**Goal:** Move from 10 hand-crafted problems to hundreds/thousands.
+
+| **Option** | **Approach** | **Effort** |
+| **A. LeetCode Dataset** | Use existing datasets (APPS, HumanEval, MBPP) | Low |
+| **B. Procedural Generation** | Generate problems programmatically (sorting variations, graph problems, etc.) | Medium |
+| **C. LLM-Generated Problems** | Use a strong model to generate problems + test cases, verify with execution | Medium |
+
+
+# Phase 6: Progressive Difficulty (Curriculum Learning)
+
+**Goal:** Model N+1 should solve harder problems than Model N.
+
+* **Iteration 1:** Easy problems only → Model N+1
+
+* **Iteration 2:** Easy + Medium → Model N+2
+
+* **Iteration 3:** Easy + Medium + Hard → Model N+3
+
+This tests whether self-improvement compounds over iterations.
+
+# Phase 7: Held-Out Evaluation
+
+**Goal:** Prove the model generalizes, not just memorizes.
+
+* Split problems into train/test sets.
+
+* Never show test problems during training.
+
+* **Measure:** "Does Model N+1 solve *unseen* problems better than Model N?"
+
+# Phase 8: Multi-Iteration Loop
+
+**Goal:** Run the full loop multiple times automatically.
+```python
+for i in range(N):
+    solutions = generate(model_i, problems)
+    verified = verify(solutions)
+    model_{i+1} = train(model_i, verified)
+```
+**Track performance curve across iterations.**
+
+# Phase 9: Expand to Math/Reasoning
+
+**Goal:** Prove the approach works beyond code.
+
+* **Math problems** with SymPy verification
+
+* **Logic puzzles** with formal verification
+
+* **Theorem proving** with Lean/Coq
+
 ## 🛠️ Tech Stack
 
   * **Language:** Python 3.10+
