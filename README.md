@@ -92,6 +92,7 @@ This creates a **self-improvement loop** where:
 **Goal:** Move from 10 hand-crafted problems to hundreds/thousands.
 
 | **Option** | **Approach** | **Effort** |
+|--------------------------------|--------------------------------|----------|
 | **A. LeetCode Dataset** | Use existing datasets (APPS, HumanEval, MBPP) | Low |
 | **B. Procedural Generation** | Generate problems programmatically (sorting variations, graph problems, etc.) | Medium |
 | **C. LLM-Generated Problems** | Use a strong model to generate problems + test cases, verify with execution | Medium |
