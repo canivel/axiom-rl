@@ -1,4 +1,4 @@
-# axiom-rl
+# axiom-rl: Axiomatic Reinforcement Learning
 
 **Self-Improving Reasoning via Verifiable Value Functions**
 
