@@ -89,22 +89,30 @@ This creates a **self-improvement loop** where:
       - Implement LoRA-based SFT training on synthetic data.
       - Compare Model N+1 vs Model N performance.
 
+### Completed Phases (Continued)
+
+  - [x] **Phase 0: The Cold Start (Stability)**
+      - Created "Teacher" dataset using Gemini 2.5 Flash.
+      - Generated 39 high-quality reasoning traces with `<think>` tags.
+      - See [docs/phase0-cold-start.md](docs/phase0-cold-start.md) for details.
+
+  - [x] **Phase 5: Procedural Generation (Infinite Dataset)**
+      - Built procedural problem generators for 6 problem types.
+      - Arithmetic, RPN, Parentheses, List Sort, List Filter, List Aggregate.
+      - Infinite unique problems with perfect ground truth.
+      - See [docs/phase5-procedural-generation.md](docs/phase5-procedural-generation.md) for details.
+
+  - [x] **Phase 6: The Grokking Experiment (Science Core)**
+      - Implemented experiment infrastructure for observing generalization.
+      - Metrics tracking, evaluation pipeline, visualization tools.
+      - **Full self-improvement loop implemented and tested!**
+      - Baseline: 50% train accuracy, 33% validation accuracy
+      - Successfully collected 9 correct solutions and trained on them
+      - Training loss decreased 32% (1.32 → 0.89), confirming learning
+      - See [docs/phase6-grokking-experiment.md](docs/phase6-grokking-experiment.md) for details.
+      - See [docs/phase6-self-improvement-results.md](docs/phase6-self-improvement-results.md) for experimental results.
+
 ### Upcoming Phases
-
-  - [ ] **Phase 0: The Cold Start (Stability)**
-      - Create a "Teacher" dataset using a strong model (GPT-4o/DeepSeek-V3).
-      - Generate high-quality reasoning traces to prime the model before self-improvement.
-      - Teach the model *how* to reason before rewarding it for reasoning correctly.
-
-  - [ ] **Phase 5: Procedural Generation (Infinite Dataset)**
-      - Build a procedural problem generator for infinite training data.
-      - Generate problems with perfect ground truth (e.g., math expressions, RPN, logic).
-      - Enable observation of "Grokking" phenomenon with sufficient data scale.
-
-  - [ ] **Phase 6: The Grokking Experiment (Science Core)**
-      - Train on procedurally generated data across 100+ iterations.
-      - Plot Train Accuracy vs Test Accuracy to observe generalization.
-      - Prove that verifiable RL causes faster "Grokking" than standard fine-tuning.
 
   - [ ] **Phase 7: Replay Buffer (Catastrophic Forgetting)**
       - Implement mixed training data strategy:
@@ -112,6 +120,11 @@ This creates a **self-improvement loop** where:
         - 40% Best historical successes
         - 10% Cold start data (formatting stability)
       - Prevent model from "chasing its tail" during multi-iteration training.
+
+  - [ ] **Phase 8: Extended Grokking Experiments**
+      - Run 50-100 iteration experiments to observe true grokking.
+      - Scale to 100+ problems per iteration.
+      - Track validation accuracy for sudden generalization jumps.
 
 ## 🛠️ Tech Stack
 
@@ -251,6 +264,67 @@ uv run python scripts/run_pipeline.py --model models/lora-sft --experiment finet
 
 # Compare results
 # solutions_baseline.jsonl vs solutions_finetuned.jsonl
+```
+
+## 🔄 Phase 6: Self-Improvement Experiments
+
+Run the full Expert Iteration loop with procedural problems:
+
+### Running Self-Improvement
+
+```bash
+# Quick test (small scale)
+uv run python scripts/run_self_improve.py --experiment test_v1
+
+# Full run with more iterations
+uv run python scripts/run_self_improve.py \
+    --experiment full_v1 \
+    --train-size 100 \
+    --iterations 10
+
+# Customize problem types
+uv run python scripts/run_self_improve.py \
+    --problem-types arithmetic rpn \
+    --min-difficulty 5 \
+    --max-difficulty 9
+```
+
+### Self-Improvement CLI Options
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--experiment` | `self_improve_v1` | Experiment name |
+| `--model` | `Qwen/Qwen2.5-Coder-1.5B-Instruct` | Base model |
+| `--train-size` | `30` | Training problems |
+| `--val-size` | `10` | Validation problems |
+| `--test-size` | `10` | Test problems |
+| `--iterations` | `3` | Self-improvement iterations |
+| `--problem-types` | `arithmetic rpn parentheses` | Problem types |
+| `--min-difficulty` | `3` | Minimum difficulty (1-10) |
+| `--max-difficulty` | `7` | Maximum difficulty (1-10) |
+| `--lr` | `2e-4` | Learning rate |
+
+### What Happens During Self-Improvement
+
+Each iteration:
+1. **Evaluate** - Test model on train/val/test sets
+2. **Collect** - Gather correct solutions from training problems
+3. **Train** - Fine-tune with LoRA on correct solutions
+4. **Repeat** - Next iteration uses improved model
+
+### Output Structure
+
+```
+experiments/{experiment_name}/
+├── config.json              # Experiment settings
+├── metrics.jsonl            # Accuracy at each iteration
+├── train.jsonl              # Training problems
+├── val.jsonl                # Validation problems
+├── test.jsonl               # Test problems
+└── solutions/
+    ├── iter_0.jsonl         # Correct solutions from iteration 0
+    ├── iter_1.jsonl         # Correct solutions from iteration 1
+    └── ...
 ```
 
 ## 📊 Experimental Results

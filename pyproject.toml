@@ -27,6 +27,8 @@ dependencies = [
     "accelerate>=0.25.0",
     "peft>=0.7.0",
     "datasets>=2.14.0",
+    "google-generativeai>=0.8.0",
+    "python-dotenv>=1.0.0",
 ]
 
 [tool.uv.sources]
@@ -51,6 +53,7 @@ quantization = [
 [project.scripts]
 axiom-pipeline = "scripts.run_pipeline:main"
 axiom-train = "scripts.run_training:main"
+axiom-coldstart = "scripts.generate_teacher_data:main"
 
 [build-system]
 requires = ["hatchling"]
