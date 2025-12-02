@@ -340,8 +340,13 @@ class SelfImprovementExperiment:
 
         trainer.train()
 
-        self.peft_model.eval()
-        print("  Training complete!")
+        # Merge LoRA weights into base model for fast inference
+        # See docs/optimization-lora-merge.md for detailed explanation
+        print("  Merging LoRA weights into base model...")
+        self.model = self.peft_model.merge_and_unload()
+        self.peft_model = None  # Reset for next iteration's fresh LoRA
+        self.model.eval()
+        print("  Training complete! Model merged for fast inference.")
 
     def run(self):
         """Run the full self-improvement experiment."""
