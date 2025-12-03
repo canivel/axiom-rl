@@ -21,34 +21,20 @@ Current LLMs excel at the **Policy** (predicting the next token) but lack a robu
 The system implements a complete **Expert Iteration** pipeline with four key subsystems:
 
 ```mermaid
-graph TD
-    subgraph Phase0["Phase 0: Cold Start"]
-        T[Teacher Model<br/>Gemini 2.5] --> R[Reasoning Traces<br/>with think tags]
+graph LR
+    subgraph Loop["Expert Iteration Loop"]
+        direction LR
+        G[Generator] -->|Code| V{Verifier}
+        V -->|✓ Pass| D[Gold Data]
+        V -->|✗ Fail| X[Discard]
+        D --> T[Trainer]
+        T -->|LoRA Merge| G
     end
 
-    subgraph Phase5["Phase 5: Procedural Generation"]
-        P[Problem Generators] --> |Infinite| PROB[Unique Problems]
-        PROB --> AR[Arithmetic]
-        PROB --> RPN[RPN Evaluation]
-        PROB --> PAR[Parentheses]
-        PROB --> LIST[List Operations]
-    end
-
-    subgraph Phase6["Phase 6: Expert Iteration Loop"]
-        G[Generator<br/>Actor] --> |Sample Solutions| V{Verifier<br/>Sandbox}
-        V --> |Pass| GOLD[Collect Gold Data]
-        V --> |Fail| DISC[Discard]
-        GOLD --> TR[Trainer<br/>LoRA]
-        TR --> |Merge Weights| M[Model N+1<br/>Improved]
-        M --> |Next Iteration| G
-    end
-
-    R --> G
-    PROB --> G
+    P[Procedural<br/>Problems] --> G
 
     style V fill:#f9f,stroke:#333,stroke-width:2px
-    style M fill:#9f9,stroke:#333,stroke-width:2px
-    style GOLD fill:#ff9,stroke:#333,stroke-width:2px
+    style D fill:#9f9,stroke:#333,stroke-width:2px
 ```
 
 ### Core Components
