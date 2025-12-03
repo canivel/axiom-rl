@@ -22,6 +22,9 @@ The system implements a complete **Expert Iteration** pipeline with four key sub
 
 ```mermaid
 graph LR
+    C[Cold Start<br/>Teacher Data] -.->|Bootstrap| G
+    P[Procedural<br/>Problems] --> G
+
     subgraph Loop["Expert Iteration Loop"]
         direction LR
         G[Generator] -->|Code| V{Verifier}
@@ -31,23 +34,22 @@ graph LR
         T -->|LoRA Merge| G
     end
 
-    P[Procedural<br/>Problems] --> G
-
     style V fill:#f9f,stroke:#333,stroke-width:2px
     style D fill:#9f9,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
 ```
 
 ### Core Components
 
-1. **The Verifier (Sandbox):** A secure Python execution environment that tests generated code against known correct answers. For procedural problems, verification is exact-match against computed ground truth.
+1. **Cold Start:** Teacher-generated reasoning traces (via Gemini) that bootstrap stable output formatting before self-improvement begins.
 
-2. **The Generator (Actor):** An open-weights model (Qwen2.5-Coder) that generates solutions with optional reasoning traces (`<think>` tags learned from cold start).
+2. **Procedural Generation:** Infinite unique problems with mathematically provable correct answers—no human annotation needed.
 
-3. **The Trainer (Learner):** LoRA-based fine-tuning on verified solutions. After training, weights are **merged** back into the base model for full inference speed.
+3. **The Generator (Actor):** An open-weights model (Qwen2.5-Coder) that generates solutions with optional reasoning traces (`<think>` tags learned from cold start).
 
-4. **Procedural Generation:** Infinite unique problems with mathematically provable correct answers—no human annotation needed.
+4. **The Verifier (Sandbox):** A secure Python execution environment that tests generated code against known correct answers. For procedural problems, verification is exact-match against computed ground truth.
 
-5. **Cold Start:** Teacher-generated reasoning traces (via Gemini) that bootstrap stable output formatting before self-improvement begins.
+5. **The Trainer (Learner):** LoRA-based fine-tuning on verified solutions. After training, weights are **merged** back into the base model for full inference speed.
 
 ## 💡 Why This Is Different From Supervised Learning
 
