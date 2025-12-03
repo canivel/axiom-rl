@@ -93,6 +93,7 @@ This creates a **self-improvement loop** where:
 
 > **Status Legend:** 🔬 = Implemented, needs validation | ⏳ = In progress | 📋 = Planned
 
+<<<<<<< HEAD
 ### Phase 0: Foundation & Stability
 
 | Phase | Name | Status | Description |
@@ -149,6 +150,43 @@ This creates a **self-improvement loop** where:
 - **Does grokking occur?** Can we observe sudden generalization after extended training?
 - **Does self-improvement scale?** Does Model N+10 outperform Model N+1?
 - **Does reasoning transfer?** Do `<think>` traces improve performance on new problem types?
+=======
+### Completed Phases
+
+  - [x] **Phase 1: The Verifier (Ground Truth)**
+      - **Goal:** Implement a secure, robust Python execution sandbox.
+      - **Run:** `uv run python scripts/test_verifier_isolation.py`
+      - **Docs:** [docs/running_phases.md#phase-1-the-verifier-ground-truth](docs/running_phases.md#phase-1-the-verifier-ground-truth)
+
+  - [x] **Phase 2: The Cold Start (Data Generation)**
+      - **Goal:** Generate high-quality reasoning traces with `<think>` tags.
+      - **Run:** `uv run python scripts/generate_teacher_data.py --problems two_sum --traces-per-problem 1`
+      - **Docs:** [docs/running_phases.md#phase-2-cold-start-data-generation](docs/running_phases.md#phase-2-cold-start-data-generation)
+
+  - [x] **Phase 3: SFT Training (Behavioral Cloning)**
+      - **Goal:** Train model to mimic the "Cold Start" reasoning format.
+      - **Run:** `uv run python scripts/run_training.py --solutions data/coldstart/teacher_traces.jsonl --epochs 1`
+      - **Docs:** [docs/running_phases.md#phase-3-sft-training-behavioral-cloning](docs/running_phases.md#phase-3-sft-training-behavioral-cloning)
+
+  - [x] **Phase 4: GRPO Training (Self-Improvement)**
+      - **Goal:** Implement Group Relative Policy Optimization (RL Loop).
+      - **Run:** `uv run python scripts/test_grpo_verifier.py`
+      - **Docs:** [docs/running_phases.md#phase-4-grpo-training-self-improvement](docs/running_phases.md#phase-4-grpo-training-self-improvement)
+
+### Upcoming Phases
+
+  - [ ] **Phase 5: Procedural Generation (Infinite Dataset)**
+      - Build procedural problem generators (Arithmetic, RPN, Logic).
+      - Prevent memorization by generating infinite unique problems.
+
+  - [ ] **Phase 6: The Grokking Experiment (Science Core)**
+      - Run long-training experiments to observe "Grokking" (sudden generalization).
+      - Track validation accuracy on held-out procedural problems.
+
+  - [ ] **Phase 7: Replay Buffer (Catastrophic Forgetting)**
+      - Implement mixed training data strategy (New + Old + Cold Start).
+      - Prevent model from "chasing its tail".
+>>>>>>> abedf81 (feat: Implement GRPO Trainer and Cold Start improvements)
 
 ## 🛠️ Tech Stack
 

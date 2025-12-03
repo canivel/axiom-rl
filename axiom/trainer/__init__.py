@@ -3,6 +3,8 @@
 from .data import SFTDataset, load_training_data
 from .lora_config import get_lora_config, get_training_args
 from .trainer import LoRASFTTrainer
+from .grpo_config import GRPOConfig
+from .grpo_trainer import GRPOTrainer
 
 __all__ = [
     "SFTDataset",
@@ -10,4 +12,6 @@ __all__ = [
     "get_lora_config",
     "get_training_args",
     "LoRASFTTrainer",
+    "GRPOConfig",
+    "GRPOTrainer",
 ]

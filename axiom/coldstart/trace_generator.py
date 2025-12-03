@@ -89,6 +89,7 @@ class ReasoningTraceGenerator:
                     problem_title=problem.title,
                     problem_description=problem.description,
                     function_signature=problem.function_signature,
+                    temperature=0.7,  # High temperature for diverse reasoning paths
                 )
 
                 # Verify the generated code

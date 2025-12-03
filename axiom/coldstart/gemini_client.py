@@ -56,6 +56,7 @@ class GeminiClient:
         problem_title: str,
         problem_description: str,
         function_signature: str,
+        temperature: float = 0.7,
     ) -> GeminiResponse:
         """
         Generate a reasoning trace for a problem.
@@ -64,6 +65,7 @@ class GeminiClient:
             problem_title: Title of the problem
             problem_description: Full problem description
             function_signature: The function signature to implement
+            temperature: Sampling temperature (0.0 to 1.0)
 
         Returns:
             GeminiResponse with thinking trace and code
@@ -72,7 +74,11 @@ class GeminiClient:
             problem_title, problem_description, function_signature
         )
 
-        response = self.model.generate_content(prompt)
+        generation_config = genai.types.GenerationConfig(
+            temperature=temperature,
+        )
+
+        response = self.model.generate_content(prompt, generation_config=generation_config)
         raw_text = response.text
 
         # Parse the response
