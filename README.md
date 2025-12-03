@@ -20,45 +20,35 @@ Current LLMs excel at the **Policy** (predicting the next token) but lack a robu
 
 The system implements a complete **Expert Iteration** pipeline with four key subsystems:
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         AXIOM-RL ARCHITECTURE                                │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                              │
-│  ┌─────────────────────┐          ┌─────────────────────────────────────┐  │
-│  │   COLD START        │          │       PROCEDURAL GENERATION          │  │
-│  │   (Phase 0)         │          │       (Phase 5)                      │  │
-│  │                     │          │                                      │  │
-│  │  Teacher Model ─────┼──────────┼──► Infinite Unique Problems         │  │
-│  │  (Gemini 2.5)       │          │    ├── Arithmetic                   │  │
-│  │       │             │          │    ├── RPN Evaluation               │  │
-│  │       ▼             │          │    ├── Parentheses Matching         │  │
-│  │  Reasoning Traces   │          │    └── List Operations              │  │
-│  │  with <think> tags  │          │                                      │  │
-│  └──────────┬──────────┘          └──────────────┬──────────────────────┘  │
-│             │                                     │                         │
-│             ▼                                     ▼                         │
-│  ┌──────────────────────────────────────────────────────────────────────┐  │
-│  │                     EXPERT ITERATION LOOP (Phase 6)                   │  │
-│  │  ┌─────────────┐     ┌─────────────┐     ┌─────────────┐             │  │
-│  │  │  GENERATOR  │────▶│  VERIFIER   │────▶│   TRAINER   │             │  │
-│  │  │  (Actor)    │     │ (Sandbox)   │     │   (LoRA)    │             │  │
-│  │  └──────┬──────┘     └──────┬──────┘     └──────┬──────┘             │  │
-│  │         │                   │                   │                     │  │
-│  │         │    ┌──────────────┴──────────────┐   │                     │  │
-│  │         │    │                              │   │                     │  │
-│  │         │    ▼                              ▼   │                     │  │
-│  │         │  ✓ Pass ──► Collect Gold Data        │                     │  │
-│  │         │  ✗ Fail ──► Discard                  │                     │  │
-│  │         │                                       │                     │  │
-│  │         │         ┌─────────────────────────────┘                    │  │
-│  │         │         │  Merge LoRA → Faster Inference                   │  │
-│  │         │         ▼                                                   │  │
-│  │         └─────── Model N+1 (Improved) ◄──────────────────────────────│  │
-│  │                                                                       │  │
-│  └───────────────────────────────────────────────────────────────────────┘  │
-│                                                                              │
-└──────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    subgraph Phase0["Phase 0: Cold Start"]
+        T[Teacher Model<br/>Gemini 2.5] --> R[Reasoning Traces<br/>with think tags]
+    end
+
+    subgraph Phase5["Phase 5: Procedural Generation"]
+        P[Problem Generators] --> |Infinite| PROB[Unique Problems]
+        PROB --> AR[Arithmetic]
+        PROB --> RPN[RPN Evaluation]
+        PROB --> PAR[Parentheses]
+        PROB --> LIST[List Operations]
+    end
+
+    subgraph Phase6["Phase 6: Expert Iteration Loop"]
+        G[Generator<br/>Actor] --> |Sample Solutions| V{Verifier<br/>Sandbox}
+        V --> |Pass| GOLD[Collect Gold Data]
+        V --> |Fail| DISC[Discard]
+        GOLD --> TR[Trainer<br/>LoRA]
+        TR --> |Merge Weights| M[Model N+1<br/>Improved]
+        M --> |Next Iteration| G
+    end
+
+    R --> G
+    PROB --> G
+
+    style V fill:#f9f,stroke:#333,stroke-width:2px
+    style M fill:#9f9,stroke:#333,stroke-width:2px
+    style GOLD fill:#ff9,stroke:#333,stroke-width:2px
 ```
 
 ### Core Components
