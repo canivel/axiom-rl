@@ -1,132 +1,140 @@
-# How to Run and Validate Axiom-RL Phases
+# Running Axiom-RL: Step-by-Step Guide
 
-This guide provides step-by-step instructions to run and validate each component of the Axiom-RL pipeline in isolation. It explains **what** happens, **why** it matters, and **how** to interpret the results.
+This guide walks you through running the complete V2 self-improvement pipeline.
 
-**Prerequisites:**
-- Ensure `uv` is installed.
-- Ensure your `.env` file has a valid `GEMINI_API_KEY`.
+## Prerequisites
+
+- Python 3.10+
+- [UV](https://docs.astral.sh/uv/) package manager
+- CUDA-capable GPU (12GB+ VRAM recommended)
+
+## Quick Start
+
+```bash
+# 1. Install dependencies
+uv venv && uv pip install -e .
+
+# 2. Test generators work
+uv run python scripts/test_v2_generators.py
+
+# 3. Run V2 experiment
+uv run python scripts/run_self_improve_v2.py --experiment my_test --iterations 2
+```
 
 ---
 
-## Phase 1: The Verifier (Ground Truth)
-**Goal:** Ensure the sandbox correctly judges Python code against test cases.
+## Step 1: Verify Installation
 
-### The Concept
-The Verifier is the "Environment" in our Reinforcement Learning setup. It acts as the impartial judge. If the Verifier is buggy (e.g., accepts wrong answers), the model will learn to cheat. If it rejects right answers, the model will never learn. We must prove it is strict and accurate.
+```bash
+# Activate environment
+.venv\Scripts\activate  # Windows
+source .venv/bin/activate  # Linux/Mac
 
-### How to Validate
-We run a script that feeds two known solutions to the Verifier:
-1.  A **Correct** solution (Hash Map implementation of Two Sum).
-2.  An **Incorrect** solution (Returns `[0, 0]` blindly).
-
-**Command:**
-```powershell
-uv run python scripts/test_verifier_isolation.py
+# Test imports
+uv run python -c "from axiom.procedural import get_generator_v2; print('OK')"
 ```
-
-**Expected Output & Analysis:**
-```text
-Testing Verifier on problem: Two Sum
-Correct Solution: PASSED
-Incorrect Solution: FAILED
-```
-*   **Why this makes sense:**
-    *   `PASSED` for the correct code means the sandbox successfully executed the Python code, ran the test cases, and verified the output matched the expected result.
-    *   `FAILED` for the incorrect code means the sandbox correctly identified that `[0, 0]` is not the answer for every input.
-    *   **Conclusion:** The "Judge" is fair and functional.
 
 ---
 
-## Phase 2: Cold Start (Data Generation)
-**Goal:** Ensure the system can generate synthetic reasoning traces using the Teacher Model (Gemini).
+## Step 2: Test Problem Generators
 
-### The Concept
-A random model cannot "reason" from scratch. We need to "seed" it with examples of good reasoning. We use a smart model (Gemini) to generate "Thought Process" + "Code" pairs. This data will be the textbook our model studies before it tries to solve problems itself.
-
-### How to Validate
-We generate a single trace for the `two_sum` problem. This tests the API connection, the Prompt Engineering (forcing `<think>` tags), and the saving logic.
-
-**Command:**
-```powershell
-uv run python scripts/generate_teacher_data.py --problems two_sum --traces-per-problem 1
+```bash
+uv run python scripts/test_v2_generators.py
 ```
 
-**Expected Output & Analysis:**
-```text
-COLD START: Teacher Data Generation
-...
-[1/1] Two Sum (two_sum)
-    Trace 1/1: VERIFIED
-Teacher dataset generated!
-Output: data/coldstart/teacher_traces.jsonl
-```
-*   **Why this makes sense:**
-    *   `VERIFIED` means the Teacher (Gemini) didn't just hallucinate; it wrote code that actually passed the Verifier (Phase 1).
-    *   The output file `teacher_traces.jsonl` contains the "Gold Standard" data: a problem, a step-by-step thought process, and a correct solution.
-    *   **Conclusion:** We have a working "Data Factory" to create training material.
+**What this validates:**
+- Problems have multiple test cases (5+)
+- Functions take input arguments
+- Hardcoding cannot pass all tests
+- Correct algorithms pass all tests
 
 ---
 
-## Phase 3: SFT Training (Behavioral Cloning)
-**Goal:** Train the model to mimic the format and reasoning style of the Cold Start data.
+## Step 3: Run V2 Experiment
 
-### The Concept
-Before the model can *discover* new solutions (RL), it must learn *how to speak the language of reasoning*. SFT (Supervised Fine-Tuning) forces the model to predict the Teacher's tokens. It learns: "When I see a problem, I should open a `<think>` tag and break it down."
+### Quick Test (2 iterations)
 
-### How to Validate
-We run a very short training run (1 epoch) on the data we just generated. We aren't trying to make it smart yet, just checking if the "School" (Trainer) is open.
-
-**Command:**
-```powershell
-uv run python scripts/run_training.py --solutions data/coldstart/teacher_traces.jsonl --epochs 1 --output-dir models/test_sft
+```bash
+uv run python scripts/run_self_improve_v2.py \
+    --experiment v2_quick \
+    --train-per-type 5 \
+    --iterations 2
 ```
 
-**Expected Output & Analysis:**
-```text
-Loading model...
-Starting SFT Training...
-Epoch 1 | Step 10 | Loss: 0.5432
-Training complete!
+### Full Experiment (10 iterations)
+
+```bash
+uv run python scripts/run_self_improve_v2.py \
+    --experiment v2_full \
+    --train-per-type 20 \
+    --iterations 10
 ```
-*   **Why this makes sense:**
-    *   `Loss: 0.5432` (or similar number) means the model is surprised by the data but learning. If it were `0.0`, it memorized it instantly (bad). If `NaN`, it crashed.
-    *   **Conclusion:** The training pipeline works. The model can ingest our data and update its weights.
 
 ---
 
-## Phase 4: GRPO Training (Self-Improvement)
-**Goal:** Run the full Reinforcement Learning loop where the model generates solutions, the Verifier scores them, and the model updates.
+## Step 4: Analyze Results
 
-### The Concept
-This is the "Straight Shot" engine. The model is no longer copying a teacher.
-1.  **Rollout:** It tries 16 different ways to solve a problem.
-2.  **Verify:** The Verifier scores them (1.0 or 0.0).
-3.  **Update:** The math (GRPO) makes the winning thoughts more likely and the losing thoughts less likely.
+```bash
+# View metrics
+type experiments\v2_quick\metrics.jsonl
 
-### How to Validate
-We run the integration test script. This uses the **Real Verifier** (Phase 1) inside the **GRPO Loop**.
-
-**Command:**
-```powershell
-uv run python scripts/test_grpo_verifier.py
+# View collected solutions
+type experiments\v2_quick\solutions\iter_0.jsonl
 ```
 
-**Expected Output & Analysis:**
-```text
-Testing GRPOTrainer with REAL Verifier...
-Loaded problem: Two Sum
-Starting GRPO Training...
-Epoch 0 | Step 0 | Loss: 0.0000 | Avg Reward: 0.0000 (or 1.0000)
-Test passed!
+### Expected Results
+
 ```
-*   **Why this makes sense:**
-    *   `Avg Reward: 0.0000` usually means the untrained model failed all 16 attempts (normal for a hard problem).
-    *   `Avg Reward: 0.2500` would mean 4 out of 16 attempts passed.
-    *   The fact that it runs without crashing proves that the **Model** is talking to the **Verifier** and learning from the result.
-    *   **Conclusion:** The Self-Improvement Engine is operational.
+Iteration   Train    Val      Test
+-----------------------------------------
+0           70.0%    83.3%    100.0%
+1           90.0%    100.0%   83.3%
+-----------------------------------------
+Change:     +20.0%   +16.7%   -16.7%
+```
+
+**Key:** Training accuracy should IMPROVE over iterations (not degrade like V1).
 
 ---
 
-## Appendix A: `scripts/test_verifier_isolation.py`
+## CLI Options Reference
 
-(Script content as previously defined)
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--experiment` | `v2_experiment` | Experiment name |
+| `--model` | `Qwen/Qwen2.5-Coder-1.5B-Instruct` | Base model |
+| `--problem-types` | `rpn parentheses` | Problem types |
+| `--train-per-type` | `10` | Training problems per type |
+| `--test-cases` | `5` | Test cases per problem |
+| `--iterations` | `5` | Self-improvement iterations |
+| `--lr` | `5e-5` | Learning rate |
+
+---
+
+## Interactive Notebook
+
+For hands-on analysis, use the Colab notebook:
+
+**[notebooks/axiom_v2_step_by_step.ipynb](../notebooks/axiom_v2_step_by_step.ipynb)**
+
+11 parts with isolated cells and detailed outputs.
+
+---
+
+## Troubleshooting
+
+### "CUDA out of memory"
+Use smaller model: `--model Qwen/Qwen2.5-Coder-0.5B-Instruct`
+
+### "0 solutions collected"
+Reduce difficulty: `--test-cases 3`
+
+### "CONFIG not defined" (notebook)
+Run cell 1.3 first
+
+---
+
+## Documentation
+
+- [Phase 7: V2 Problem Design](phase7-v2-problem-design.md) - Full technical details
+- [Critical Analysis](critical-analysis-problem-design.md) - Why V1 failed
