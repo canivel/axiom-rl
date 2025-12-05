@@ -1,0 +1,1007 @@
+{
+  "experiment": "02_focused_improvement",
+  "timestamp": "2025-12-04T20:34:55.802972",
+  "config": {
+    "experiment_name": "02_focused_improvement",
+    "base_model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+    "problem_types": [
+      "remove_duplicates",
+      "fibonacci"
+    ],
+    "train_problems_per_type": 25,
+    "val_problems_per_type": 10,
+    "test_problems_per_type": 10,
+    "test_cases_per_problem": 5,
+    "samples_per_problem": 8,
+    "num_iterations": 3,
+    "learning_rate": 5e-05,
+    "num_epochs": 3,
+    "batch_size": 4,
+    "seed": 42,
+    "output_dir": "experiments/02_focused_improvement"
+  },
+  "metrics": [
+    {
+      "iteration": 0,
+      "timestamp": "2025-12-04T18:31:25.511330",
+      "val": {
+        "by_problem": {
+          "remove_duplicates_val_0": {
+            "passed": 3,
+            "total": 8,
+            "accuracy": 37.5
+          },
+          "remove_duplicates_val_1": {
+            "passed": 7,
+            "total": 8,
+            "accuracy": 87.5
+          },
+          "remove_duplicates_val_2": {
+            "passed": 8,
+            "total": 8,
+            "accuracy": 100.0
+          },
+          "remove_duplicates_val_3": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_4": {
+            "passed": 2,
+            "total": 8,
+            "accuracy": 25.0
+          },
+          "remove_duplicates_val_5": {
+            "passed": 1,
+            "total": 8,
+            "accuracy": 12.5
+          },
+          "remove_duplicates_val_6": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_7": {
+            "passed": 2,
+            "total": 8,
+            "accuracy": 25.0
+          },
+          "remove_duplicates_val_8": {
+            "passed": 1,
+            "total": 8,
+            "accuracy": 12.5
+          },
+          "remove_duplicates_val_9": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "fibonacci_val_0": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_val_1": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          },
+          "fibonacci_val_2": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_val_3": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_val_4": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          },
+          "fibonacci_val_5": {
+            "passed": 7,
+            "total": 8,
+            "accuracy": 87.5
+          },
+          "fibonacci_val_6": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          },
+          "fibonacci_val_7": {
+            "passed": 7,
+            "total": 8,
+            "accuracy": 87.5
+          },
+          "fibonacci_val_8": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          },
+          "fibonacci_val_9": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          }
+        },
+        "by_type": {
+          "remove_duplicates": {
+            "passed": 24,
+            "total": 80,
+            "accuracy": 30.0
+          },
+          "fibonacci": {
+            "passed": 58,
+            "total": 80,
+            "accuracy": 72.5
+          }
+        },
+        "overall": {
+          "passed": 82,
+          "total": 160,
+          "accuracy": 51.24999999999999
+        }
+      },
+      "test": {
+        "by_problem": {
+          "remove_duplicates_test_0": {
+            "passed": 1,
+            "total": 8,
+            "accuracy": 12.5
+          },
+          "remove_duplicates_test_1": {
+            "passed": 2,
+            "total": 8,
+            "accuracy": 25.0
+          },
+          "remove_duplicates_test_2": {
+            "passed": 1,
+            "total": 8,
+            "accuracy": 12.5
+          },
+          "remove_duplicates_test_3": {
+            "passed": 2,
+            "total": 8,
+            "accuracy": 25.0
+          },
+          "remove_duplicates_test_4": {
+            "passed": 2,
+            "total": 8,
+            "accuracy": 25.0
+          },
+          "remove_duplicates_test_5": {
+            "passed": 1,
+            "total": 8,
+            "accuracy": 12.5
+          },
+          "remove_duplicates_test_6": {
+            "passed": 2,
+            "total": 8,
+            "accuracy": 25.0
+          },
+          "remove_duplicates_test_7": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_8": {
+            "passed": 1,
+            "total": 8,
+            "accuracy": 12.5
+          },
+          "remove_duplicates_test_9": {
+            "passed": 2,
+            "total": 8,
+            "accuracy": 25.0
+          },
+          "fibonacci_test_0": {
+            "passed": 4,
+            "total": 8,
+            "accuracy": 50.0
+          },
+          "fibonacci_test_1": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_test_2": {
+            "passed": 7,
+            "total": 8,
+            "accuracy": 87.5
+          },
+          "fibonacci_test_3": {
+            "passed": 7,
+            "total": 8,
+            "accuracy": 87.5
+          },
+          "fibonacci_test_4": {
+            "passed": 4,
+            "total": 8,
+            "accuracy": 50.0
+          },
+          "fibonacci_test_5": {
+            "passed": 4,
+            "total": 8,
+            "accuracy": 50.0
+          },
+          "fibonacci_test_6": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          },
+          "fibonacci_test_7": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          },
+          "fibonacci_test_8": {
+            "passed": 4,
+            "total": 8,
+            "accuracy": 50.0
+          },
+          "fibonacci_test_9": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          }
+        },
+        "by_type": {
+          "remove_duplicates": {
+            "passed": 14,
+            "total": 80,
+            "accuracy": 17.5
+          },
+          "fibonacci": {
+            "passed": 53,
+            "total": 80,
+            "accuracy": 66.25
+          }
+        },
+        "overall": {
+          "passed": 67,
+          "total": 160,
+          "accuracy": 41.875
+        }
+      }
+    },
+    {
+      "iteration": 1,
+      "timestamp": "2025-12-04T19:47:59.949932",
+      "val": {
+        "by_problem": {
+          "remove_duplicates_val_0": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_1": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_2": {
+            "passed": 4,
+            "total": 8,
+            "accuracy": 50.0
+          },
+          "remove_duplicates_val_3": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_4": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_5": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_6": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_7": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_8": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_9": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "fibonacci_val_0": {
+            "passed": 4,
+            "total": 8,
+            "accuracy": 50.0
+          },
+          "fibonacci_val_1": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          },
+          "fibonacci_val_2": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          },
+          "fibonacci_val_3": {
+            "passed": 7,
+            "total": 8,
+            "accuracy": 87.5
+          },
+          "fibonacci_val_4": {
+            "passed": 3,
+            "total": 8,
+            "accuracy": 37.5
+          },
+          "fibonacci_val_5": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_val_6": {
+            "passed": 3,
+            "total": 8,
+            "accuracy": 37.5
+          },
+          "fibonacci_val_7": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          },
+          "fibonacci_val_8": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_val_9": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          }
+        },
+        "by_type": {
+          "remove_duplicates": {
+            "passed": 4,
+            "total": 80,
+            "accuracy": 5.0
+          },
+          "fibonacci": {
+            "passed": 51,
+            "total": 80,
+            "accuracy": 63.74999999999999
+          }
+        },
+        "overall": {
+          "passed": 55,
+          "total": 160,
+          "accuracy": 34.375
+        }
+      },
+      "test": {
+        "by_problem": {
+          "remove_duplicates_test_0": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_1": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_2": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_3": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_4": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_5": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_6": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_7": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_8": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_9": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "fibonacci_test_0": {
+            "passed": 3,
+            "total": 8,
+            "accuracy": 37.5
+          },
+          "fibonacci_test_1": {
+            "passed": 3,
+            "total": 8,
+            "accuracy": 37.5
+          },
+          "fibonacci_test_2": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_test_3": {
+            "passed": 1,
+            "total": 8,
+            "accuracy": 12.5
+          },
+          "fibonacci_test_4": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_test_5": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_test_6": {
+            "passed": 3,
+            "total": 8,
+            "accuracy": 37.5
+          },
+          "fibonacci_test_7": {
+            "passed": 4,
+            "total": 8,
+            "accuracy": 50.0
+          },
+          "fibonacci_test_8": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_test_9": {
+            "passed": 4,
+            "total": 8,
+            "accuracy": 50.0
+          }
+        },
+        "by_type": {
+          "remove_duplicates": {
+            "passed": 0,
+            "total": 80,
+            "accuracy": 0.0
+          },
+          "fibonacci": {
+            "passed": 38,
+            "total": 80,
+            "accuracy": 47.5
+          }
+        },
+        "overall": {
+          "passed": 38,
+          "total": 160,
+          "accuracy": 23.75
+        }
+      }
+    },
+    {
+      "iteration": 2,
+      "timestamp": "2025-12-04T20:34:55.802002",
+      "val": {
+        "by_problem": {
+          "remove_duplicates_val_0": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_1": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_2": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_3": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_4": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_5": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_6": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_7": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_8": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_val_9": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "fibonacci_val_0": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_val_1": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_val_2": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          },
+          "fibonacci_val_3": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          },
+          "fibonacci_val_4": {
+            "passed": 4,
+            "total": 8,
+            "accuracy": 50.0
+          },
+          "fibonacci_val_5": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_val_6": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_val_7": {
+            "passed": 4,
+            "total": 8,
+            "accuracy": 50.0
+          },
+          "fibonacci_val_8": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          },
+          "fibonacci_val_9": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          }
+        },
+        "by_type": {
+          "remove_duplicates": {
+            "passed": 0,
+            "total": 80,
+            "accuracy": 0.0
+          },
+          "fibonacci": {
+            "passed": 51,
+            "total": 80,
+            "accuracy": 63.74999999999999
+          }
+        },
+        "overall": {
+          "passed": 51,
+          "total": 160,
+          "accuracy": 31.874999999999996
+        }
+      },
+      "test": {
+        "by_problem": {
+          "remove_duplicates_test_0": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_1": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_2": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_3": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_4": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_5": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_6": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_7": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_8": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "remove_duplicates_test_9": {
+            "passed": 0,
+            "total": 8,
+            "accuracy": 0.0
+          },
+          "fibonacci_test_0": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_test_1": {
+            "passed": 4,
+            "total": 8,
+            "accuracy": 50.0
+          },
+          "fibonacci_test_2": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_test_3": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          },
+          "fibonacci_test_4": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          },
+          "fibonacci_test_5": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_test_6": {
+            "passed": 5,
+            "total": 8,
+            "accuracy": 62.5
+          },
+          "fibonacci_test_7": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          },
+          "fibonacci_test_8": {
+            "passed": 2,
+            "total": 8,
+            "accuracy": 25.0
+          },
+          "fibonacci_test_9": {
+            "passed": 6,
+            "total": 8,
+            "accuracy": 75.0
+          }
+        },
+        "by_type": {
+          "remove_duplicates": {
+            "passed": 0,
+            "total": 80,
+            "accuracy": 0.0
+          },
+          "fibonacci": {
+            "passed": 50,
+            "total": 80,
+            "accuracy": 62.5
+          }
+        },
+        "overall": {
+          "passed": 50,
+          "total": 160,
+          "accuracy": 31.25
+        }
+      }
+    }
+  ],
+  "final_results": {
+    "val": {
+      "by_problem": {
+        "remove_duplicates_val_0": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_val_1": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_val_2": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_val_3": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_val_4": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_val_5": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_val_6": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_val_7": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_val_8": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_val_9": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "fibonacci_val_0": {
+          "passed": 5,
+          "total": 8,
+          "accuracy": 62.5
+        },
+        "fibonacci_val_1": {
+          "passed": 5,
+          "total": 8,
+          "accuracy": 62.5
+        },
+        "fibonacci_val_2": {
+          "passed": 6,
+          "total": 8,
+          "accuracy": 75.0
+        },
+        "fibonacci_val_3": {
+          "passed": 6,
+          "total": 8,
+          "accuracy": 75.0
+        },
+        "fibonacci_val_4": {
+          "passed": 4,
+          "total": 8,
+          "accuracy": 50.0
+        },
+        "fibonacci_val_5": {
+          "passed": 5,
+          "total": 8,
+          "accuracy": 62.5
+        },
+        "fibonacci_val_6": {
+          "passed": 5,
+          "total": 8,
+          "accuracy": 62.5
+        },
+        "fibonacci_val_7": {
+          "passed": 4,
+          "total": 8,
+          "accuracy": 50.0
+        },
+        "fibonacci_val_8": {
+          "passed": 6,
+          "total": 8,
+          "accuracy": 75.0
+        },
+        "fibonacci_val_9": {
+          "passed": 5,
+          "total": 8,
+          "accuracy": 62.5
+        }
+      },
+      "by_type": {
+        "remove_duplicates": {
+          "passed": 0,
+          "total": 80,
+          "accuracy": 0.0
+        },
+        "fibonacci": {
+          "passed": 51,
+          "total": 80,
+          "accuracy": 63.74999999999999
+        }
+      },
+      "overall": {
+        "passed": 51,
+        "total": 160,
+        "accuracy": 31.874999999999996
+      }
+    },
+    "test": {
+      "by_problem": {
+        "remove_duplicates_test_0": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_test_1": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_test_2": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_test_3": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_test_4": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_test_5": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_test_6": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_test_7": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_test_8": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "remove_duplicates_test_9": {
+          "passed": 0,
+          "total": 8,
+          "accuracy": 0.0
+        },
+        "fibonacci_test_0": {
+          "passed": 5,
+          "total": 8,
+          "accuracy": 62.5
+        },
+        "fibonacci_test_1": {
+          "passed": 4,
+          "total": 8,
+          "accuracy": 50.0
+        },
+        "fibonacci_test_2": {
+          "passed": 5,
+          "total": 8,
+          "accuracy": 62.5
+        },
+        "fibonacci_test_3": {
+          "passed": 6,
+          "total": 8,
+          "accuracy": 75.0
+        },
+        "fibonacci_test_4": {
+          "passed": 6,
+          "total": 8,
+          "accuracy": 75.0
+        },
+        "fibonacci_test_5": {
+          "passed": 5,
+          "total": 8,
+          "accuracy": 62.5
+        },
+        "fibonacci_test_6": {
+          "passed": 5,
+          "total": 8,
+          "accuracy": 62.5
+        },
+        "fibonacci_test_7": {
+          "passed": 6,
+          "total": 8,
+          "accuracy": 75.0
+        },
+        "fibonacci_test_8": {
+          "passed": 2,
+          "total": 8,
+          "accuracy": 25.0
+        },
+        "fibonacci_test_9": {
+          "passed": 6,
+          "total": 8,
+          "accuracy": 75.0
+        }
+      },
+      "by_type": {
+        "remove_duplicates": {
+          "passed": 0,
+          "total": 80,
+          "accuracy": 0.0
+        },
+        "fibonacci": {
+          "passed": 50,
+          "total": 80,
+          "accuracy": 62.5
+        }
+      },
+      "overall": {
+        "passed": 50,
+        "total": 160,
+        "accuracy": 31.25
+      }
+    }
+  }
+}

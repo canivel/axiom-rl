@@ -60,4 +60,4 @@ Thumbs.db
 logs/
 private/
 
-.env
+.env*.safetensors

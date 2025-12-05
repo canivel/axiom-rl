@@ -9,7 +9,7 @@ This directory contains all experimental results for the axiom-rl self-improveme
 | 01 | [Baseline Evaluation](01_baseline_evaluation/) | Completed | 85% overall accuracy, 2 weak problems identified |
 | 02 | [Focused Improvement](02_focused_improvement/) | Completed | **Catastrophic forgetting**: accuracy degraded -19% due to overfitting |
 | 03 | [Fast Validation](03_fast_validation/) | Completed | Confirmed forgetting is fundamental (-30%), Best-of-4 optimal |
-| 04 | [Replay Buffer](04_replay_buffer/) | Ready | Testing if replay buffer prevents forgetting |
+| 04 | [Replay Buffer](04_replay_buffer/) | ✅ Completed | **SUCCESS**: Replay buffer prevents forgetting (+10% val vs -30% without) |
 | 05 | Procedural Generation | Planned | Full-scale scalability test with diverse problem types |
 
 ## Methodology
