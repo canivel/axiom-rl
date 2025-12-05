@@ -1,0 +1,19 @@
+{
+  "experiment_name": "02_focused_improvement",
+  "base_model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+  "problem_types": [
+    "remove_duplicates",
+    "fibonacci"
+  ],
+  "train_problems_per_type": 25,
+  "val_problems_per_type": 10,
+  "test_problems_per_type": 10,
+  "test_cases_per_problem": 5,
+  "samples_per_problem": 8,
+  "num_iterations": 3,
+  "learning_rate": 5e-05,
+  "num_epochs": 3,
+  "batch_size": 4,
+  "seed": 42,
+  "output_dir": "experiments/02_focused_improvement"
+}
