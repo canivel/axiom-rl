@@ -122,19 +122,129 @@ This creates a **self-improvement loop** where:
       - First successful demonstration of genuine algorithm learning
       - See [docs/phase7-v2-problem-design.md](docs/phase7-v2-problem-design.md) for details.
 
+  - [x] **Phase 8: GRPO on Hard Problems (Major Breakthrough)**
+      - Implemented GRPO (Group Relative Policy Optimization) for RL fine-tuning
+      - Created 10 LeetCode-hard style problem generators (LCS, Edit Distance, Knapsack, etc.)
+      - **Key Result: Edit Distance 0% → 100%** after just 5 GRPO training steps!
+      - Demonstrates RL from execution feedback can teach genuine algorithmic reasoning
+      - See [experiments/10_grpo_hard_problems/](experiments/10_grpo_hard_problems/) for details.
+
+## 🔬 Experiments
+
+All experiments are documented in `experiments/` with full reproducibility information.
+
+### Experiment 01: Baseline Evaluation
+
+**Status:** Completed | [Full Report](experiments/01_baseline_evaluation/README.md)
+
+Established baseline performance on 10 classic programming problems using Best-of-8 evaluation.
+
+| Problem | Accuracy | Status |
+|---------|----------|--------|
+| remove_duplicates | **12.5%** | Needs improvement |
+| fibonacci | **62.5%** | Needs improvement |
+| valid_parentheses | 87.5% | Minor issues |
+| merge_sorted_arrays | 87.5% | Minor issues |
+| Others (6 problems) | 100% | Strong |
+| **Overall** | **85.0%** | - |
+
+**Key Finding:** Identified two weak problems for targeted improvement.
+
+### Experiment 02: Focused Improvement
+
+**Status:** In Progress | [Full Report](experiments/02_focused_improvement/README.md)
+
+Testing whether targeted self-improvement can fix weak problems:
+- Generate 5x more training data for `remove_duplicates` and `fibonacci`
+- Run 3 iterations of Expert Iteration
+- Measure improvement with Best-of-8 evaluation
+
+```bash
+# Run the experiment
+uv run python scripts/run_focused_improvement.py \
+    --experiment 02_focused_improvement \
+    --train-per-type 25 \
+    --iterations 3
+```
+
+### Experiment 09: Hard Problems Baseline
+
+**Status:** Completed | [Full Report](experiments/09_hard_problems_baseline/README.md)
+
+Evaluated base Qwen 0.5B model on 10 LeetCode-hard style problems.
+
+| Problem Type | Result | Category |
+|--------------|--------|----------|
+| LCS | PASS | Dynamic Programming |
+| Edit Distance | FAIL | Dynamic Programming |
+| Knapsack | FAIL | Dynamic Programming |
+| LIS | PASS | Dynamic Programming |
+| Coin Change | FAIL | Dynamic Programming |
+| Word Break | PASS | Dynamic Programming |
+| Merge Intervals | PASS | Greedy |
+| Median Sorted Arrays | PASS | Binary Search |
+| Trapping Rain Water | PASS | Two Pointer |
+| N-Queens | FAIL | Backtracking |
+
+**Overall: 60% accuracy (6/10)**
+
+### Experiment 10: GRPO Hard Problems (Major Result)
+
+**Status:** Completed | [Full Report](experiments/10_grpo_hard_problems/README.md)
+
+Used GRPO reinforcement learning to teach the model algorithms it previously failed on.
+
+```
+┌────────────────────────────────────────────────────────────┐
+│           EDIT DISTANCE: BEFORE vs AFTER GRPO              │
+├────────────────────────────────────────────────────────────┤
+│                                                            │
+│  Before GRPO   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0%   │
+│                                                            │
+│  After GRPO    ██████████████████████████████████████ 100% │
+│                                                            │
+└────────────────────────────────────────────────────────────┘
+                    +100% improvement in 5 steps!
+```
+
+**Key Findings:**
+- Edit Distance learned in just 5 GRPO training steps (~25 minutes)
+- RL from execution feedback teaches genuine algorithmic patterns
+- Transfer learning from related algorithms (LCS → Edit Distance) accelerates learning
+- Small models (0.5B) can learn complex algorithms with efficient RL
+
+```bash
+# Reproduce the experiment
+uv run python scripts/run_grpo_hard.py --problems edit_distance --steps 5
+
+# Test the trained model
+uv run python scripts/test_hard_problems.py --model models/grpo-hard/final_model
+```
+
+### Experiment 03: Procedural Generation
+
+**Status:** Planned
+
+Full-scale experiment with procedurally generated problems to test scalability.
+
+---
+
 ### Upcoming Phases
 
-  - [ ] **Phase 8: Replay Buffer (Catastrophic Forgetting)**
-      - Implement mixed training data strategy:
-        - 50% New self-solved data (current loop)
-        - 40% Best historical successes
-        - 10% Cold start data (formatting stability)
-      - Prevent model from "chasing its tail" during multi-iteration training.
+  - [ ] **Phase 9: Teacher Distillation for Hard Problems**
+      - Generate Claude/Gemini solutions for Coin Change, Knapsack
+      - SFT on correct solutions first, then GRPO refinement
+      - Target: Solve remaining 3 weak problem types
 
-  - [ ] **Phase 9: Extended Grokking Experiments**
-      - Run 50-100 iteration experiments to observe true grokking.
-      - Scale to 100+ problems per iteration.
-      - Track validation accuracy for sudden generalization jumps.
+  - [ ] **Phase 10: Curriculum Learning on Hard Problems**
+      - Progressive difficulty (1-3 → 4-6 → 7-10)
+      - Adaptive strategy based on success rate
+      - Combined SFT + GRPO training pipeline
+
+  - [ ] **Phase 11: Extended Evaluation**
+      - Run 50+ GRPO steps per problem type
+      - Test for catastrophic forgetting on V2 problems
+      - Benchmark small model + RL vs large model few-shot
 
 ## 🛠️ Tech Stack
 
