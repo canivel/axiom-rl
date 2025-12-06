@@ -1,12 +1,22 @@
 # Experiment 11: Teacher Distillation for Hard Problems
 
-**Status**: In Progress
+**Status**: ✅ Completed
 **Date**: 2025-12-06
-**Duration**: ~1-2 hours
+**Duration**: ~30 minutes
+
+## Results Summary
+
+| Problem | Baseline | After SFT | Target | Status |
+|---------|----------|-----------|--------|--------|
+| **Coin Change** | 0% | **100%** | >80% | ✅ EXCEEDED |
+| **Knapsack** | 0% | **100%** | >80% | ✅ EXCEEDED |
+| **N-Queens** | 40% | 40% | >80% | ❌ Needs more data |
+
+**Key Achievement**: Teacher distillation (Gemini → SFT) solved 2 of 3 hard problems that GRPO alone couldn't solve.
 
 ## Objective
 
-Use Claude as a teacher model to generate high-quality reasoning traces for hard problems that GRPO alone couldn't solve:
+Use Gemini as a teacher model to generate high-quality reasoning traces for hard problems that GRPO alone couldn't solve:
 
 | Problem | GRPO-Only Result | Reason for Failure |
 |---------|------------------|-------------------|
@@ -250,12 +260,86 @@ The representation distance is too large for GRPO exploration.
 
 Teacher distillation bridges this gap by providing the target representation directly.
 
+## Actual Results
+
+### Stage 1: Trace Generation
+
+Used Gemini 2.5 Flash (due to rate limits on Claude API):
+
+```bash
+uv run python scripts/generate_hard_traces.py \
+    --teacher gemini \
+    --problems coin_change knapsack n_queens \
+    --count 3 \
+    --difficulties 3 5 7 \
+    --output data/coldstart_v2/hard_traces_full.jsonl
+```
+
+**Results:**
+- Total attempts: 18 (rate-limited from 27)
+- Verified: **18 (100%)**
+- Coin Change: 9/9 verified
+- Knapsack: 8/8 verified
+- N-Queens: 1/1 verified (limited by rate limits)
+
+### Stage 2: SFT Training
+
+```bash
+uv run python scripts/run_training.py \
+    --solutions data/coldstart_v2/hard_traces_full.jsonl \
+    --model Qwen/Qwen2.5-Coder-0.5B-Instruct \
+    --epochs 3 \
+    --output-dir models/hard-distill/sft
+```
+
+**Results:**
+- Training samples: 16 (train) + 2 (val)
+- Trainable params: 8.8M (1.75% of 502M)
+- Final train loss: 1.1953
+- Training time: ~29 seconds
+
+### Stage 3: Evaluation
+
+**Baseline Model (Qwen 0.5B):**
+```
+knapsack      FAIL   0/5  (Exec error: name 'N' is not defined)
+coin_change   FAIL   0/5  (Expected 5, got 3)
+n_queens      FAIL   2/5  (Expected 2, got 1)
+OVERALL: 0/3 (0.0%)
+```
+
+**After SFT Distillation:**
+```
+knapsack      PASS   5/5  ✅
+coin_change   PASS   5/5  ✅
+n_queens      FAIL   2/5
+OVERALL: 2/3 (66.7%)
+```
+
+### Analysis
+
+| Problem | Baseline | After SFT | Improvement | Analysis |
+|---------|----------|-----------|-------------|----------|
+| Coin Change | 0% | 100% | **+100%** | Teacher traces bootstrapped 1D DP pattern |
+| Knapsack | 0% | 100% | **+100%** | Similar to Coin Change - 1D DP learned |
+| N-Queens | 40% | 40% | 0% | Only 1 trace generated due to rate limits |
+
+**Key Insight**: The success of Coin Change and Knapsack validates the hypothesis. N-Queens didn't improve because we only had 1 training example (9 for the others).
+
+### Why N-Queens Didn't Improve
+
+The rate-limiting meant we only generated 1 N-Queens trace vs 8-9 for the other problems:
+- Coin Change: 9 traces → 100% accuracy
+- Knapsack: 8 traces → 100% accuracy
+- N-Queens: 1 trace → 40% accuracy (unchanged)
+
+**Prediction**: With 8+ N-Queens traces, we would see similar improvement.
+
 ## Next Steps
 
-After this experiment:
+Based on these results:
 
-1. **If successful**: Apply same approach to other hard problem categories (graph algorithms, tree problems)
-
-2. **If partial success**: Increase training data, try curriculum learning
-
-3. **Long-term**: Build automated pipeline for continuous improvement on arbitrary problem sets
+1. **Generate more N-Queens traces** - Need 8+ to match other problems
+2. **Try GRPO refinement** - May help with edge cases
+3. **Apply to graph/tree problems** - Same technique should work
+4. **Build continuous improvement pipeline** - Automate the trace → SFT → GRPO loop

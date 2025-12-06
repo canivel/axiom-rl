@@ -16,7 +16,7 @@ This directory contains all experimental results for the axiom-rl self-improveme
 | 08 | [Curriculum Learning](08_curriculum_learning/) | ✅ Completed | Framework validated, adaptive strategy working |
 | 09 | [Hard Problems Baseline](09_hard_problems_baseline/) | ✅ Completed | **60% accuracy** on LeetCode-hard, 4 weak problem types identified |
 | 10 | [GRPO Hard Problems](10_grpo_hard_problems/) | ✅ Completed | **Edit Distance: 0% → 100%** via GRPO, Coin Change needs more work |
-| 11 | [Teacher Distillation Hard](11_teacher_distillation_hard/) | 🔄 In Progress | Claude traces + SFT + GRPO for Coin Change, Knapsack, N-Queens |
+| 11 | [Teacher Distillation Hard](11_teacher_distillation_hard/) | ✅ Completed | **Coin Change: 0% → 100%, Knapsack: 0% → 100%** via Gemini traces + SFT |
 
 ## Methodology
 
