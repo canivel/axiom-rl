@@ -10,7 +10,13 @@ This directory contains all experimental results for the axiom-rl self-improveme
 | 02 | [Focused Improvement](02_focused_improvement/) | Completed | **Catastrophic forgetting**: accuracy degraded -19% due to overfitting |
 | 03 | [Fast Validation](03_fast_validation/) | Completed | Confirmed forgetting is fundamental (-30%), Best-of-4 optimal |
 | 04 | [Replay Buffer](04_replay_buffer/) | ✅ Completed | **SUCCESS**: Replay buffer prevents forgetting (+10% val vs -30% without) |
-| 05 | Procedural Generation | Planned | Full-scale scalability test with diverse problem types |
+| 05 | [Enhanced Distillation](05_enhanced_distillation/) | ✅ Completed | Claude 100% vs Gemini 75.8% verification, 60 traces generated |
+| 06 | [SFT Baseline V2](06_sft_baseline_v2/) | ✅ Completed | **76.4% accuracy** on V2 problems, 6 problem types at 100% |
+| 07 | [GRPO Validation](07_grpo_validation/) | ✅ Completed | Training loop functional, ~5 min/step on RTX 3080, memory-stable |
+| 08 | [Curriculum Learning](08_curriculum_learning/) | ✅ Completed | Framework validated, adaptive strategy working |
+| 09 | [Hard Problems Baseline](09_hard_problems_baseline/) | ✅ Completed | **60% accuracy** on LeetCode-hard, 4 weak problem types identified |
+| 10 | [GRPO Hard Problems](10_grpo_hard_problems/) | ✅ Completed | **Edit Distance: 0% → 100%** via GRPO, Coin Change needs more work |
+| 11 | Teacher Distillation Hard | 🔄 Next | Generate Claude traces for Coin Change, Knapsack |
 
 ## Methodology
 
@@ -103,6 +109,26 @@ uv run python scripts/run_with_replay.py \
     --replay-ratio 0.5 \
     --lr 2e-5 \
     --iterations 2
+```
+
+### GRPO Hard Problems Training
+
+```bash
+# Train on weak problem types (Edit Distance, Coin Change)
+uv run python scripts/run_grpo_hard.py \
+    --problems edit_distance coin_change \
+    --steps 5 \
+    --difficulty 5
+
+# Train on all weak problems
+uv run python scripts/run_grpo_hard.py \
+    --problems edit_distance knapsack coin_change n_queens \
+    --steps 10
+
+# Test trained model on hard problems
+uv run python scripts/test_hard_problems.py \
+    --model models/grpo-hard/final_model \
+    --difficulty 5
 ```
 
 ### Full Experiments
