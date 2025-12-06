@@ -335,11 +335,164 @@ The rate-limiting meant we only generated 1 N-Queens trace vs 8-9 for the other 
 
 **Prediction**: With 8+ N-Queens traces, we would see similar improvement.
 
+## Extended N-Queens Analysis
+
+### Additional Experiments
+
+After the initial results, we conducted extensive experiments to understand N-Queens failure:
+
+#### Experiment A: Synthetic Trace Generation
+
+Created 16 synthetic N-Queens traces without API calls using canonical backtracking implementations:
+
+```bash
+uv run python scripts/generate_synthetic_nqueens.py
+```
+
+Generated traces include 8 solution variants:
+1. Classic backtracking with column/diagonal sets
+2. Boolean arrays instead of sets
+3. Compact version with helper function
+4. Bit manipulation (advanced)
+5. Iterative with placement tracking
+6. Immutable set passing (functional style)
+7. Named constraints for clarity
+8. Alternative diagonal indexing
+
+**Result**: 16 verified traces generated, all passing test cases.
+
+#### Experiment B: Combined Training
+
+Trained on all 34 traces (18 Gemini + 16 synthetic N-Queens):
+
+```bash
+uv run python scripts/run_training.py \
+    --solutions data/coldstart_v2/all_hard_traces.jsonl \
+    --epochs 3 \
+    --output-dir models/hard-distill/sft-with-nqueens
+```
+
+**Result**:
+- Coin Change: 100% ✅ (maintained)
+- Knapsack: 100% ✅ (maintained)
+- N-Queens: 40% ❌ (unchanged)
+
+#### Experiment C: N-Queens Only Training
+
+Trained exclusively on N-Queens traces with higher learning rate:
+
+```bash
+uv run python scripts/run_training.py \
+    --solutions data/coldstart_v2/n_queens_synthetic.jsonl \
+    --epochs 5 \
+    --lr 3e-4 \
+    --output-dir models/nqueens-only
+```
+
+**Result**: Still 40% accuracy (2/5 test cases)
+
+#### Experiment D: Best-of-8 Sampling
+
+Tested if model can generate correct N-Queens with multiple sampling:
+
+**Result**: 0/8 samples passed all test cases
+
+### Root Cause Analysis
+
+The model generates structurally incorrect code:
+
+**Expected** (from training traces):
+```python
+def n_queens(n: int) -> int:
+    count = 0
+    cols = set()
+    diag1 = set()  # row - col
+    diag2 = set()  # row + col
+
+    def backtrack(row):
+        nonlocal count
+        if row == n:
+            count += 1
+            return
+        for col in range(n):
+            if col in cols or (row - col) in diag1 or (row + col) in diag2:
+                continue
+            cols.add(col)
+            # ... recursive backtracking
+```
+
+**Generated** (incorrect):
+```python
+def n_queens(n: int) -> int:
+    def is_safe(board, row, col):
+        # Uses board[i][j] matrix approach
+        for i in range(row):
+            if board[i][col] == 1:  # Wrong constraint checking
+                return False
+        # Missing proper diagonal checks
+```
+
+The model mixes concepts from different approaches and fails to implement proper backtracking.
+
+### Model Scale Experiment
+
+Tested the larger 1.5B model on N-Queens:
+
+```bash
+uv run python scripts/test_hard_problems.py \
+    --model Qwen/Qwen2.5-Coder-1.5B-Instruct \
+    --problems n_queens
+```
+
+**Result**: 100% accuracy (5/5 test cases) ✅
+
+### Key Finding: Complexity Threshold
+
+| Model | Size | N-Queens Result | Notes |
+|-------|------|-----------------|-------|
+| Qwen 0.5B | 500M | 40% | Cannot learn even with 16 traces |
+| Qwen 0.5B + SFT | 500M | 40% | No improvement with training |
+| Qwen 1.5B | 1.5B | 100% | Solves out of the box |
+
+**Conclusion**: N-Queens represents a **complexity threshold** between 0.5B and 1.5B models.
+
+### Why N-Queens is Harder
+
+1. **Multiple Constraint Types**: Columns + 2 diagonal directions
+2. **Recursive Backtracking**: Requires precise state management
+3. **Combinatorial Explosion**: O(N!) solution space
+4. **No Simple Transfer**: Unlike Edit Distance → LCS, no simpler problem to transfer from
+
+### Implications
+
+1. **0.5B Limit**: Cannot reliably learn complex backtracking algorithms
+2. **Scaling Works**: 1.5B model has sufficient capacity
+3. **Problem Categorization**: Need to classify problems by complexity threshold
+4. **Practical Guidance**: Use 1.5B+ for backtracking problems
+
+## Final Results Summary
+
+### 0.5B Model Results (After All Training)
+
+| Problem | Baseline | After SFT | Status |
+|---------|----------|-----------|--------|
+| Coin Change | 0% | **100%** | ✅ Solved via distillation |
+| Knapsack | 0% | **100%** | ✅ Solved via distillation |
+| Edit Distance | 0% | **100%** | ✅ Solved via GRPO (Exp 10) |
+| N-Queens | 40% | 40% | ❌ Model capacity limit |
+
+**Overall**: 3/4 hard problems solved (75%)
+
+### Research Conclusions
+
+1. **Teacher distillation works** for 1D DP problems (Coin Change, Knapsack)
+2. **GRPO works** when transfer learning is possible (Edit Distance → LCS)
+3. **Model scale matters** for complex backtracking (N-Queens requires 1.5B+)
+4. **Combined approach** (distillation + RL) is most effective
+
 ## Next Steps
 
-Based on these results:
-
-1. **Generate more N-Queens traces** - Need 8+ to match other problems
-2. **Try GRPO refinement** - May help with edge cases
-3. **Apply to graph/tree problems** - Same technique should work
-4. **Build continuous improvement pipeline** - Automate the trace → SFT → GRPO loop
+1. **Scale up to 1.5B** - Test full pipeline on larger model
+2. **Problem complexity taxonomy** - Categorize problems by model size requirements
+3. **Hybrid approach** - Use different models for different complexity levels
+4. **New problem types** - Apply lessons to graph/tree algorithms

@@ -248,7 +248,7 @@ Used Gemini 2.5 Flash to generate verified solution traces, then SFT-trained a 0
 │                                                            │
 │  N-Queens     Before  ████████████░░░░░░░░░░░░░░░░░░ 40%  │
 │               After   ████████████░░░░░░░░░░░░░░░░░░ 40%  │
-│               (limited by rate limits - only 1 trace)      │
+│               (model capacity limit - see below)           │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
           Overall: 0% → 66.7% on hard problems
@@ -256,9 +256,25 @@ Used Gemini 2.5 Flash to generate verified solution traces, then SFT-trained a 0
 
 **Key Findings:**
 - Coin Change and Knapsack: 0% → 100% with 8-9 training traces each
-- N-Queens didn't improve (only 1 trace due to rate limits)
+- N-Queens did NOT improve even with 16 synthetic traces (model capacity limit)
 - Teacher distillation bridges the "representation distance" gap
-- Combined with GRPO results: 4/5 weak problems now solved
+- Combined with GRPO results: 3/4 hard problems solved (75%)
+
+### N-Queens Deep Dive: Model Capacity Limit
+
+After initial results, we conducted extensive experiments on N-Queens:
+
+1. **Synthetic trace generation**: Created 16 verified N-Queens traces using 8 different algorithm variants
+2. **Dedicated training**: Trained exclusively on N-Queens with higher learning rate
+3. **Best-of-8 sampling**: 0/8 samples passed all test cases
+4. **Model scale test**: Qwen 1.5B solves N-Queens out of the box (100%)
+
+**Conclusion**: N-Queens represents a **complexity threshold** between 0.5B and 1.5B models.
+
+| Model | Size | N-Queens |
+|-------|------|----------|
+| Qwen 0.5B + SFT | 500M | 40% (cannot learn) |
+| Qwen 1.5B | 1.5B | 100% (native) |
 
 ```bash
 # Reproduce the experiment
