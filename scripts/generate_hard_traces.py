@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate teacher traces for hard problems using Claude API.
+Generate teacher traces for hard problems using Claude or Gemini API.
 
 This script generates high-quality reasoning traces for LeetCode-hard style
 problems that the small model struggles with after GRPO training:
@@ -13,7 +13,8 @@ SFT distillation to bootstrap the model before GRPO refinement.
 
 Usage:
     uv run python scripts/generate_hard_traces.py --problems coin_change knapsack
-    uv run python scripts/generate_hard_traces.py --all --count 5 --difficulty 5
+    uv run python scripts/generate_hard_traces.py --teacher gemini --all --count 5
+    uv run python scripts/generate_hard_traces.py --teacher claude --problems n_queens
 """
 
 import argparse
@@ -26,7 +27,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from axiom.procedural.generators_hard import get_all_hard_generators, GENERATORS_HARD
-from axiom.coldstart.claude_client import ClaudeClient
 
 # Problems that GRPO failed to solve (need teacher distillation)
 WEAK_PROBLEMS = ["coin_change", "knapsack", "n_queens"]
@@ -73,24 +73,47 @@ def verify_solution(code: str, problem) -> tuple[bool, int, int]:
     return passed == total, passed, total
 
 
+def get_teacher_client(teacher: str):
+    """Get the appropriate teacher client based on teacher name."""
+    if teacher.lower() == "gemini":
+        from axiom.coldstart.gemini_client import GeminiClient
+        try:
+            return GeminiClient(), "gemini-2.5-flash"
+        except ValueError as e:
+            print(f"Error: {e}")
+            print("Please set GEMINI_API_KEY in your .env file")
+            return None, None
+    elif teacher.lower() == "claude":
+        from axiom.coldstart.claude_client import ClaudeClient
+        try:
+            return ClaudeClient(), "claude-sonnet-4"
+        except ValueError as e:
+            print(f"Error: {e}")
+            print("Please set ANTHROPIC_API_KEY in your .env file")
+            return None, None
+    else:
+        print(f"Error: Unknown teacher '{teacher}'. Use 'gemini' or 'claude'")
+        return None, None
+
+
 def generate_traces(
     problem_types: list[str],
     count_per_type: int,
     difficulties: list[int],
     output_path: Path,
+    teacher: str = "gemini",
     seed: int = 42,
     delay: float = 1.0,
     verbose: bool = False,
 ):
-    """Generate Claude traces for hard problems."""
+    """Generate teacher traces for hard problems."""
 
-    # Initialize Claude client
-    try:
-        client = ClaudeClient()
-    except ValueError as e:
-        print(f"Error: {e}")
-        print("Please set ANTHROPIC_API_KEY in your .env file")
+    # Initialize teacher client
+    client, model_name = get_teacher_client(teacher)
+    if client is None:
         return []
+
+    print(f"Using teacher model: {model_name}")
 
     # Initialize generators
     generators = get_all_hard_generators(seed=seed)
@@ -159,7 +182,7 @@ def generate_traces(
                         "thinking": response.thinking,
                         "solution_code": response.code,
                         "raw_response": response.raw_response,
-                        "teacher_model": "claude-sonnet-4",
+                        "teacher_model": model_name,
                         "verified": all_passed,
                         "passed_tests": passed,
                         "total_tests": total_tests,
@@ -203,7 +226,13 @@ def generate_traces(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate Claude traces for hard problems")
+    parser = argparse.ArgumentParser(description="Generate teacher traces for hard problems")
+    parser.add_argument(
+        "--teacher",
+        choices=["gemini", "claude"],
+        default="gemini",
+        help="Teacher model to use (default: gemini)",
+    )
     parser.add_argument(
         "--problems",
         nargs="+",
@@ -257,6 +286,7 @@ def main():
     print("="*70)
     print("TEACHER DISTILLATION FOR HARD PROBLEMS")
     print("="*70)
+    print(f"Teacher: {args.teacher}")
     print(f"Problems: {problem_types}")
     print(f"Count per type per difficulty: {args.count}")
     print(f"Difficulties: {args.difficulties}")
@@ -268,6 +298,7 @@ def main():
         count_per_type=args.count,
         difficulties=args.difficulties,
         output_path=args.output,
+        teacher=args.teacher,
         seed=args.seed,
         delay=args.delay,
         verbose=args.verbose,
