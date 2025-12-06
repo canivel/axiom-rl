@@ -16,7 +16,7 @@ This directory contains all experimental results for the axiom-rl self-improveme
 | 08 | [Curriculum Learning](08_curriculum_learning/) | ✅ Completed | Framework validated, adaptive strategy working |
 | 09 | [Hard Problems Baseline](09_hard_problems_baseline/) | ✅ Completed | **60% accuracy** on LeetCode-hard, 4 weak problem types identified |
 | 10 | [GRPO Hard Problems](10_grpo_hard_problems/) | ✅ Completed | **Edit Distance: 0% → 100%** via GRPO, Coin Change needs more work |
-| 11 | Teacher Distillation Hard | 🔄 Next | Generate Claude traces for Coin Change, Knapsack |
+| 11 | [Teacher Distillation Hard](11_teacher_distillation_hard/) | 🔄 In Progress | Claude traces + SFT + GRPO for Coin Change, Knapsack, N-Queens |
 
 ## Methodology
 
@@ -129,6 +129,27 @@ uv run python scripts/run_grpo_hard.py \
 uv run python scripts/test_hard_problems.py \
     --model models/grpo-hard/final_model \
     --difficulty 5
+```
+
+### Teacher Distillation for Hard Problems
+
+```bash
+# Generate Claude traces for weak problems
+uv run python scripts/generate_hard_traces.py \
+    --problems coin_change knapsack n_queens \
+    --count 3 \
+    --difficulties 3 5 7
+
+# Full pipeline (traces + SFT + GRPO)
+uv run python scripts/run_hard_distillation.py
+
+# Skip trace generation (use existing traces)
+uv run python scripts/run_hard_distillation.py --skip-traces
+
+# Evaluate distilled model
+uv run python scripts/test_hard_problems.py \
+    --model models/hard-distill/grpo/final_model \
+    --problems coin_change knapsack n_queens
 ```
 
 ### Full Experiments
