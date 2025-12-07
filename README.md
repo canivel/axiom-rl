@@ -283,6 +283,53 @@ uv run python scripts/run_training.py --solutions data/coldstart_v2/hard_traces_
 uv run python scripts/test_hard_problems.py --model models/hard-distill/sft
 ```
 
+### Experiment 12: GRPO Analysis for N-Queens
+
+**Status:** Completed | [Full Report](experiments/12_grpo_nqueens_analysis/README.md)
+
+Investigated whether GRPO or curriculum learning can help the 0.5B model learn N-Queens.
+
+```
+┌────────────────────────────────────────────────────────────┐
+│           N-QUEENS: ALL APPROACHES FAILED                  │
+├────────────────────────────────────────────────────────────┤
+│                                                            │
+│  Approach A: Standard GRPO (5 steps)                       │
+│    Result: 40% (unchanged)                                 │
+│    Model outputs: 2258753, 40320 (8!), 2113 (wrong!)      │
+│                                                            │
+│  Approach B: Curriculum Learning (n=1,2,3,4)               │
+│    Result: Avg reward 0.11 (need 0.6 for promotion)       │
+│    Model outputs: 16777216 (2^24), 40320 (8!)             │
+│    Even trivial cases fail!                                │
+│                                                            │
+│  Correct answers: n=1->1, n=2->0, n=3->0, n=4->2          │
+│                                                            │
+└────────────────────────────────────────────────────────────┘
+```
+
+**Key Finding: 0.5B model CANNOT learn N-Queens backtracking**
+
+| Model | Parameters | N-Queens | Backtracking |
+|-------|------------|----------|--------------|
+| Qwen2.5-Coder-0.5B | 494M | 40% (stuck) | Cannot learn |
+| Qwen2.5-Coder-1.5B | 1.5B | 100% (native) | Works natively |
+
+The capacity threshold for backtracking is between **0.5B and 1.5B parameters**.
+
+**Alternative models to research:**
+- DeepSeek-Coder-1.3B (different architecture)
+- Phi-2 (2.7B, Microsoft)
+- StarCoder2-3B (code-focused)
+
+```bash
+# Reproduce the experiments
+uv run python scripts/run_grpo_hard.py --problems n_queens --steps 5 --difficulty 4
+uv run python scripts/run_grpo_nqueens_curriculum.py --steps-per-level 5 --low-memory
+```
+
+---
+
 ### Upcoming Phases
 
   - [x] **Phase 9: Teacher Distillation for Hard Problems** ✅ COMPLETED
