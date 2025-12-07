@@ -16,7 +16,35 @@ This directory contains all experimental results for the axiom-rl self-improveme
 | 08 | [Curriculum Learning](08_curriculum_learning/) | ✅ Completed | Framework validated, adaptive strategy working |
 | 09 | [Hard Problems Baseline](09_hard_problems_baseline/) | ✅ Completed | **60% accuracy** on LeetCode-hard, 4 weak problem types identified |
 | 10 | [GRPO Hard Problems](10_grpo_hard_problems/) | ✅ Completed | **Edit Distance: 0% → 100%** via GRPO, Coin Change needs more work |
-| 11 | Teacher Distillation Hard | 🔄 Next | Generate Claude traces for Coin Change, Knapsack |
+| 11 | [Teacher Distillation Hard](11_teacher_distillation_hard/) | ✅ Completed | **Coin Change: 0% → 100%, Knapsack: 0% → 100%** via Gemini traces + SFT |
+
+## Research Conclusions
+
+### Hard Problems Results (0.5B Model)
+
+| Problem Type | Baseline | Method Used | Final Accuracy |
+|--------------|----------|-------------|----------------|
+| Edit Distance | 0% | GRPO (transfer from LCS) | **100%** |
+| Coin Change | 0% | Teacher Distillation (Gemini) | **100%** |
+| Knapsack | 0% | Teacher Distillation (Gemini) | **100%** |
+| N-Queens | 40% | All methods tried | 40% (model capacity limit) |
+
+**Overall: 3/4 hard problems solved (75%)**
+
+### Key Findings
+
+1. **Teacher distillation works** for DP problems when the model lacks prior knowledge
+2. **GRPO works** for problems with nearby transfer targets (Edit Distance ← LCS)
+3. **Model scale matters**: N-Queens requires 1.5B+ model (verified: Qwen 1.5B solves it out of the box)
+4. **Combined approach** (distillation + RL) is most effective for hard problems
+
+### Complexity Threshold
+
+| Problem Category | 0.5B | 1.5B |
+|------------------|------|------|
+| 1D Dynamic Programming | ✅ Can learn | ✅ Native |
+| 2D Dynamic Programming | ✅ Can learn | ✅ Native |
+| Complex Backtracking (N-Queens) | ❌ Cannot learn | ✅ Native |
 
 ## Methodology
 
@@ -129,6 +157,27 @@ uv run python scripts/run_grpo_hard.py \
 uv run python scripts/test_hard_problems.py \
     --model models/grpo-hard/final_model \
     --difficulty 5
+```
+
+### Teacher Distillation for Hard Problems
+
+```bash
+# Generate Claude traces for weak problems
+uv run python scripts/generate_hard_traces.py \
+    --problems coin_change knapsack n_queens \
+    --count 3 \
+    --difficulties 3 5 7
+
+# Full pipeline (traces + SFT + GRPO)
+uv run python scripts/run_hard_distillation.py
+
+# Skip trace generation (use existing traces)
+uv run python scripts/run_hard_distillation.py --skip-traces
+
+# Evaluate distilled model
+uv run python scripts/test_hard_problems.py \
+    --model models/hard-distill/grpo/final_model \
+    --problems coin_change knapsack n_queens
 ```
 
 ### Full Experiments

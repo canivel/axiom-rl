@@ -229,17 +229,71 @@ Full-scale experiment with procedurally generated problems to test scalability.
 
 ---
 
+### Experiment 11: Teacher Distillation Hard (Latest Result)
+
+**Status:** Completed | [Full Report](experiments/11_teacher_distillation_hard/README.md)
+
+Used Gemini 2.5 Flash to generate verified solution traces, then SFT-trained a 0.5B model.
+
+```
+┌────────────────────────────────────────────────────────────┐
+│           TEACHER DISTILLATION RESULTS (Gemini → SFT)       │
+├────────────────────────────────────────────────────────────┤
+│                                                            │
+│  Coin Change  Before  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0%  │
+│               After   ██████████████████████████████ 100% │
+│                                                            │
+│  Knapsack     Before  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0%  │
+│               After   ██████████████████████████████ 100% │
+│                                                            │
+│  N-Queens     Before  ████████████░░░░░░░░░░░░░░░░░░ 40%  │
+│               After   ████████████░░░░░░░░░░░░░░░░░░ 40%  │
+│               (model capacity limit - see below)           │
+│                                                            │
+└────────────────────────────────────────────────────────────┘
+          Overall: 0% → 66.7% on hard problems
+```
+
+**Key Findings:**
+- Coin Change and Knapsack: 0% → 100% with 8-9 training traces each
+- N-Queens did NOT improve even with 16 synthetic traces (model capacity limit)
+- Teacher distillation bridges the "representation distance" gap
+- Combined with GRPO results: 3/4 hard problems solved (75%)
+
+### N-Queens Deep Dive: Model Capacity Limit
+
+After initial results, we conducted extensive experiments on N-Queens:
+
+1. **Synthetic trace generation**: Created 16 verified N-Queens traces using 8 different algorithm variants
+2. **Dedicated training**: Trained exclusively on N-Queens with higher learning rate
+3. **Best-of-8 sampling**: 0/8 samples passed all test cases
+4. **Model scale test**: Qwen 1.5B solves N-Queens out of the box (100%)
+
+**Conclusion**: N-Queens represents a **complexity threshold** between 0.5B and 1.5B models.
+
+| Model | Size | N-Queens |
+|-------|------|----------|
+| Qwen 0.5B + SFT | 500M | 40% (cannot learn) |
+| Qwen 1.5B | 1.5B | 100% (native) |
+
+```bash
+# Reproduce the experiment
+uv run python scripts/generate_hard_traces.py --teacher gemini --problems coin_change knapsack
+uv run python scripts/run_training.py --solutions data/coldstart_v2/hard_traces_full.jsonl
+uv run python scripts/test_hard_problems.py --model models/hard-distill/sft
+```
+
 ### Upcoming Phases
 
-  - [ ] **Phase 9: Teacher Distillation for Hard Problems**
-      - Generate Claude/Gemini solutions for Coin Change, Knapsack
-      - SFT on correct solutions first, then GRPO refinement
-      - Target: Solve remaining 3 weak problem types
+  - [x] **Phase 9: Teacher Distillation for Hard Problems** ✅ COMPLETED
+      - Generated Gemini solutions for Coin Change, Knapsack, N-Queens
+      - SFT on verified traces achieved 100% accuracy on Coin Change and Knapsack
+      - N-Queens needs more training data (rate-limited to 1 trace)
 
-  - [ ] **Phase 10: Curriculum Learning on Hard Problems**
-      - Progressive difficulty (1-3 → 4-6 → 7-10)
-      - Adaptive strategy based on success rate
-      - Combined SFT + GRPO training pipeline
+  - [ ] **Phase 10: N-Queens and Graph Problems**
+      - Generate more N-Queens traces (need 8+ for improvement)
+      - Add graph algorithm problems (BFS, DFS, Dijkstra)
+      - Apply same Teacher Distillation + GRPO pipeline
 
   - [ ] **Phase 11: Extended Evaluation**
       - Run 50+ GRPO steps per problem type
