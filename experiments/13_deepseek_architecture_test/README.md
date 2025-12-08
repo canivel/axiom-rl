@@ -171,4 +171,39 @@ N-Queens requires a specific threshold that 1.3B doesn't reach.
 1. **N-Queens as benchmark**: Useful for detecting capacity thresholds
 2. **Minimum viable model**: Need 1.5B+ for full algorithmic coverage
 3. **Training approach**: For N-Queens specifically, model size matters more than training method
-4. **Next step**: Use Qwen 1.5B as base model, apply GRPO to fix Trapping Rain Water (only failure)
+4. **GRPO memory constraints**: Cannot run GRPO on 1.5B+ models with 10GB VRAM
+
+### Memory Analysis for GRPO
+
+GRPO requires both a policy model and a frozen reference model:
+
+| Model Size | Policy Model | Reference Model | Optimizer | Total Required | RTX 3080 (10GB) |
+|------------|--------------|-----------------|-----------|----------------|-----------------|
+| 0.5B | ~1GB | ~1GB | ~1GB | ~3-4GB | ✅ Works |
+| 1.3B | ~2.6GB | ~2.6GB | ~2.6GB | ~8-10GB | ⚠️ At limit |
+| 1.5B | ~3GB | ~3GB | ~3GB | ~9-11GB | ❌ OOM |
+
+**Attempted GRPO on Qwen 1.5B for Trapping Rain Water:**
+- GPU: NVIDIA RTX 3080 (10GB VRAM)
+- Memory usage at model load: 10,021 MB / 10,240 MB (98%)
+- Result: Process stuck during model loading (OOM thrashing)
+
+**Options for training 1.5B models:**
+1. Use GPU with 16GB+ VRAM (RTX 4080, A10G, etc.)
+2. Use LoRA/QLoRA to reduce memory requirements
+3. Use cloud GPU (Colab Pro, RunPod, Lambda Labs)
+4. Consider gradient checkpointing (trades compute for memory)
+
+### Final Status
+
+| Task | Status | Notes |
+|------|--------|-------|
+| Test DeepSeek 1.3B baseline | ✅ Complete | 90% overall, 40% N-Queens |
+| Test Qwen 1.5B baseline | ✅ Complete | 90% overall, 100% N-Queens |
+| GRPO on DeepSeek 1.3B | ❌ Memory limit | 1.3B + ref model = OOM |
+| GRPO on Qwen 1.5B | ❌ Memory limit | 1.5B + ref model = OOM |
+
+**Recommendation**: For further experiments on Trapping Rain Water with Qwen 1.5B, use:
+- Cloud GPU with 16GB+ VRAM
+- LoRA fine-tuning instead of full GRPO
+- Teacher distillation (SFT) which only needs one model copy
