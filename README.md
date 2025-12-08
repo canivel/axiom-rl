@@ -316,16 +316,40 @@ Investigated whether GRPO or curriculum learning can help the 0.5B model learn N
 
 The capacity threshold for backtracking is between **0.5B and 1.5B parameters**.
 
-**Alternative models to research:**
-- DeepSeek-Coder-1.3B (different architecture)
-- Phi-2 (2.7B, Microsoft)
-- StarCoder2-3B (code-focused)
+**Alternative models tested:**
+- DeepSeek-Coder-1.3B: 90% overall but **still 40% on N-Queens** (see Experiment 13)
+- Threshold is between 1.3B and 1.5B for N-Queens specifically
 
 ```bash
 # Reproduce the experiments
 uv run python scripts/run_grpo_hard.py --problems n_queens --steps 5 --difficulty 4
 uv run python scripts/run_grpo_nqueens_curriculum.py --steps-per-level 5 --low-memory
 ```
+
+### Experiment 13: DeepSeek Architecture Test
+
+**Status:** Completed | [Full Report](experiments/13_deepseek_architecture_test/README.md)
+
+Tested whether DeepSeek-Coder-1.3B (different architecture) can solve N-Queens.
+
+```
+┌────────────────────────────────────────────────────────────┐
+│           DEEPSEEK 1.3B: N-QUEENS STILL FAILS              │
+├────────────────────────────────────────────────────────────┤
+│                                                            │
+│  Overall Hard Problems: 90% (9/10) - Much better!         │
+│  N-Queens Specifically: 40% - Same as Qwen 0.5B!          │
+│                                                            │
+│  Model         Params    Overall    N-Queens              │
+│  ─────────────────────────────────────────────            │
+│  Qwen 0.5B     494M      60%        40%                   │
+│  DeepSeek 1.3B 1.3B      90%        40%  <-- Same!        │
+│  Qwen 1.5B     1.5B      ~95%       100%                  │
+│                                                            │
+└────────────────────────────────────────────────────────────┘
+```
+
+**Key Finding**: N-Queens requires a specific threshold between 1.3B-1.5B parameters, regardless of architecture.
 
 ---
 
