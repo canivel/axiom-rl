@@ -83,28 +83,54 @@ Difficulty mapping:
 - Level 4-6: n in {1,4,5,6} - Medium
 - Level 7+:  n in {4,5,6,7,8} - Hard
 
-### Results
+### Results (Full 27-Step Run)
 
-| Step | Test Cases (n) | Avg Reward | Max Reward | Model Outputs |
-|------|----------------|------------|------------|---------------|
-| 1 | [1,1,3,2,2] | 0.15 | 0.20 | 1, 7, 2113, 0, 0, 0 |
-| 2 | [2,1,1,4,1] | 0.075 | 0.30 | 1, 256, 16777216 |
-| 3 | [1,1,2,2,1] | 0.325 | **1.0** | (one lucky generation) |
-| 4 | [2,4,2,4,3] | 0.00 | 0.00 | 2, 24, 40320 |
-| 5 | [1,2,4,3,3] | 0.00 | 0.00 | Failed |
+**Level 1 (n=1,2,3,4) - Three Attempts:**
 
-**Level 1 Average: 0.11** (needs 0.6 for promotion - FAILED)
+| Attempt | Steps | Avg Reward | Max Reward | Result |
+|---------|-------|------------|------------|--------|
+| 1 | 1-3 | 0.217 | 1.0 | Failed promotion |
+| 2 | 4-6 | 0.017 | 0.1 | Failed promotion |
+| 3 | 7-9 | 0.050 | 0.3 | Forced promotion |
+
+**Level 2 (n=1,2,3,4) - Three Attempts:**
+
+| Attempt | Steps | Avg Reward | Max Reward | Result |
+|---------|-------|------------|------------|--------|
+| 1 | 10-12 | 0.167 | 1.0 | Failed promotion |
+| 2 | 13-15 | 0.000 | 0.0 | Failed promotion |
+| 3 | 16-18 | 0.000 | 0.0 | Forced promotion |
+
+**Level 3 (n=1,2,3,4) - Three Attempts:**
+
+| Attempt | Steps | Avg Reward | Max Reward | Result |
+|---------|-------|------------|------------|--------|
+| 1 | 19-21 | 0.000 | 0.0 | Failed promotion |
+| 2 | 22-24 | 0.000 | 0.0 | Failed promotion |
+| 3 | 25-27 | 0.000 | 0.0 | Forced promotion |
+
+**Final Evaluation:**
+```
+Difficulty 3 (n=[2,2,4,2,3]): FAIL (0%)
+Difficulty 5 (n=[6,4,4,5,6]): FAIL (0%)
+Difficulty 7 (n=[6,7,8,7,4]): FAIL (0%)
+```
 
 ### Analysis
 
-Even at the **easiest difficulty** (n=1,2,3,4 where answers are 1,0,0,2):
+The curriculum experiment reveals a **catastrophic degradation pattern**:
 
-1. **Still generating wrong outputs**: 16777216 (2^24), 29030400, 40320 (8!)
-2. **One lucky success**: Step 3 hit Max=1.0 but this was random chance, not learning
-3. **Cannot reach promotion threshold**: 0.11 avg vs 0.6 required
-4. **Memory issues**: Experiment consumed all RAM and froze the system
+1. **Initial lucky hits disappear**: Early steps occasionally hit Max=1.0, but this stops completely
+2. **Rewards collapse to zero**: By Level 2-3, average reward is consistently 0.0
+3. **Loss explodes**: Loss increases from -0.12 to -6.57 (model confidence in wrong answers)
+4. **Final evaluation: 0% across all difficulties**
 
-**Conclusion**: Curriculum learning does not help. The model fundamentally cannot represent N-Queens.
+The model is **actively getting worse** - GRPO is reinforcing incorrect patterns because:
+- Random exploration never finds correct backtracking solutions
+- Partial rewards for wrong answers teach wrong patterns
+- Without positive signal, the model drifts further from correct behavior
+
+**Conclusion**: Curriculum learning does not help. The model fundamentally cannot represent N-Queens, and extended training makes it worse.
 
 ## Model Capacity Analysis
 
@@ -198,11 +224,25 @@ For N-Queens with the 0.5B model:
 
 ## Conclusions
 
-1. **GRPO cannot help 0.5B learn N-Queens** - confirmed
-2. **Curriculum learning also fails** - even trivial cases (n=1,2,3,4) don't help
-3. **The failure is fundamental**: Model architecture cannot represent backtracking
-4. **Model capacity is the bottleneck**: Need 1.5B+ parameters for N-Queens
-5. **Next step**: Test other small models (DeepSeek-1.3B, Phi-2) or accept 1.5B minimum
+1. **GRPO cannot help 0.5B learn N-Queens** - confirmed (5 steps, 40% unchanged)
+2. **Curriculum learning fails catastrophically** - 27 steps, final evaluation 0% (worse than baseline!)
+3. **Extended training is harmful**: Loss explodes (-0.12 → -6.57), model gets more confident in wrong answers
+4. **The failure is fundamental**: Model architecture cannot represent backtracking
+5. **Model capacity is the bottleneck**: Need 1.5B+ parameters for N-Queens
+6. **Key insight**: Without exploration success, GRPO reinforces wrong patterns
+
+### The Degradation Problem
+
+```
+Performance over curriculum training:
+Step  1-3:   Max=1.0 (lucky hits)
+Step  4-9:   Max=0.3 (declining)
+Step 10-18:  Max=0.0-1.0 (unstable)
+Step 19-27:  Max=0.0 (complete collapse)
+Final:       0% on ALL difficulties (worse than 40% baseline!)
+```
+
+This demonstrates that **GRPO without exploration success is actively harmful** - it teaches the model to be confident in incorrect solutions.
 
 ## Research Recommendations
 

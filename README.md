@@ -295,15 +295,14 @@ Investigated whether GRPO or curriculum learning can help the 0.5B model learn N
 ├────────────────────────────────────────────────────────────┤
 │                                                            │
 │  Approach A: Standard GRPO (5 steps)                       │
-│    Result: 40% (unchanged)                                 │
-│    Model outputs: 2258753, 40320 (8!), 2113 (wrong!)      │
+│    Result: 40% (unchanged from baseline)                   │
 │                                                            │
-│  Approach B: Curriculum Learning (n=1,2,3,4)               │
-│    Result: Avg reward 0.11 (need 0.6 for promotion)       │
-│    Model outputs: 16777216 (2^24), 40320 (8!)             │
-│    Even trivial cases fail!                                │
+│  Approach B: Curriculum Learning (27 steps)                │
+│    Result: 0% FINAL (WORSE than 40% baseline!)            │
+│    Loss exploded: -0.12 -> -6.57                          │
+│    Model got MORE confident in wrong answers              │
 │                                                            │
-│  Correct answers: n=1->1, n=2->0, n=3->0, n=4->2          │
+│  Key insight: GRPO without exploration success is harmful │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
 ```
