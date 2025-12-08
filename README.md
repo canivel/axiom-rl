@@ -351,6 +351,16 @@ Tested whether DeepSeek-Coder-1.3B (different architecture) can solve N-Queens.
 
 **Key Finding**: N-Queens requires a specific threshold between 1.3B-1.5B parameters, regardless of architecture.
 
+**Complete Model Comparison:**
+
+| Model | Params | Overall | N-Queens | Fits 10GB? |
+|-------|--------|---------|----------|------------|
+| Qwen 0.5B | 494M | 60% | 40% | Yes |
+| DeepSeek 1.3B | 1.3B | 90% | 40% | Yes |
+| **Qwen 1.5B** | **1.5B** | **90%** | **100%** | **Yes** |
+
+**Recommendation**: Use **Qwen2.5-Coder-1.5B-Instruct** as the minimum viable model for full algorithmic coverage.
+
 ---
 
 ### Upcoming Phases

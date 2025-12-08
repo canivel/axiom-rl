@@ -115,13 +115,27 @@ This suggests:
 
 GRPO training on DeepSeek 1.3B was attempted but could not complete due to memory constraints (1.3B model + reference model exceeds available GPU memory for GRPO).
 
-### Phase 3: Comparative Analysis
+### Phase 3: Comparative Analysis (Final)
 
-| Model | Parameters | Overall Hard Problems | N-Queens Baseline |
-|-------|------------|----------------------|-------------------|
-| Qwen2.5-Coder-0.5B | 494M | 60% (6/10) | 40% (stuck) |
-| DeepSeek-Coder-1.3B | 1.3B | **90% (9/10)** | **40% (same!)** |
-| Qwen2.5-Coder-1.5B | 1.5B | ~95% | **100%** |
+| Model | Parameters | Overall Hard Problems | N-Queens | Notes |
+|-------|------------|----------------------|----------|-------|
+| Qwen2.5-Coder-0.5B | 494M | 60% (6/10) | 40% | Base model |
+| DeepSeek-Coder-1.3B | 1.3B | **90% (9/10)** | **40%** | Same N-Queens! |
+| **Qwen2.5-Coder-1.5B** | **1.5B** | **90% (9/10)** | **100%** | N-Queens solved! |
+
+**Qwen 1.5B Full Results:**
+| Problem Type | Result | Score |
+|--------------|--------|-------|
+| LCS | PASS | 5/5 |
+| Edit Distance | PASS | 5/5 |
+| Knapsack | PASS | 5/5 |
+| LIS | PASS | 5/5 |
+| Coin Change | PASS | 5/5 |
+| Word Break | PASS | 5/5 |
+| Merge Intervals | PASS | 5/5 |
+| Median Sorted Arrays | PASS | 5/5 |
+| Trapping Rain Water | FAIL | 4/5 |
+| **N-Queens** | **PASS** | **5/5** |
 
 ### Key Finding
 
@@ -157,3 +171,4 @@ N-Queens requires a specific threshold that 1.3B doesn't reach.
 1. **N-Queens as benchmark**: Useful for detecting capacity thresholds
 2. **Minimum viable model**: Need 1.5B+ for full algorithmic coverage
 3. **Training approach**: For N-Queens specifically, model size matters more than training method
+4. **Next step**: Use Qwen 1.5B as base model, apply GRPO to fix Trapping Rain Water (only failure)
