@@ -1,0 +1,625 @@
+[
+  {
+    "problem_id": "fizzbuzz_1",
+    "problem_type": "fizzbuzz",
+    "title": "FizzBuzz",
+    "description": "Implement the FizzBuzz function.\n\nGiven an integer n, return:\n- \"FizzBuzz\" if n is divisible by both 3 and 5\n- \"Fizz\" if n is divisible by 3 (but not 5)\n- \"Buzz\" if n is divisible by 5 (but not 3)\n- The number as a string otherwise\n\nYour function must work for ANY positive integer.",
+    "function_signature": "def fizzbuzz(n: int) -> str:",
+    "test_cases": [
+      {
+        "input_args": [
+          22
+        ],
+        "expected_output": "22"
+      },
+      {
+        "input_args": [
+          4
+        ],
+        "expected_output": "4"
+      },
+      {
+        "input_args": [
+          15
+        ],
+        "expected_output": "FizzBuzz"
+      },
+      {
+        "input_args": [
+          40
+        ],
+        "expected_output": "Buzz"
+      },
+      {
+        "input_args": [
+          12
+        ],
+        "expected_output": "Fizz"
+      }
+    ],
+    "prompt": "Solve the following problem by implementing the function.\n\n## Problem: FizzBuzz\n\nImplement the FizzBuzz function.\n\nGiven an integer n, return:\n- \"FizzBuzz\" if n is divisible by both 3 and 5\n- \"Fizz\" if n is divisible by 3 (but not 5)\n- \"Buzz\" if n is divisible by 5 (but not 3)\n- The number as a string otherwise\n\nYour function must work for ANY positive integer.\n\n## Function Signature\n```python\ndef fizzbuzz(n: int) -> str:\n    # Your implementation here\n```\n\n## Examples\n  fizzbuzz(22) -> '22'\n  fizzbuzz(4) -> '4'\n  fizzbuzz(15) -> 'FizzBuzz'\n\nWrite ONLY the complete function implementation that works for ALL inputs, not just the examples."
+  },
+  {
+    "problem_id": "fizzbuzz_2",
+    "problem_type": "fizzbuzz",
+    "title": "FizzBuzz",
+    "description": "Implement the FizzBuzz function.\n\nGiven an integer n, return:\n- \"FizzBuzz\" if n is divisible by both 3 and 5\n- \"Fizz\" if n is divisible by 3 (but not 5)\n- \"Buzz\" if n is divisible by 5 (but not 3)\n- The number as a string otherwise\n\nYour function must work for ANY positive integer.",
+    "function_signature": "def fizzbuzz(n: int) -> str:",
+    "test_cases": [
+      {
+        "input_args": [
+          57
+        ],
+        "expected_output": "Fizz"
+      },
+      {
+        "input_args": [
+          90
+        ],
+        "expected_output": "FizzBuzz"
+      },
+      {
+        "input_args": [
+          9
+        ],
+        "expected_output": "Fizz"
+      },
+      {
+        "input_args": [
+          1
+        ],
+        "expected_output": "1"
+      },
+      {
+        "input_args": [
+          40
+        ],
+        "expected_output": "Buzz"
+      }
+    ],
+    "prompt": "Solve the following problem by implementing the function.\n\n## Problem: FizzBuzz\n\nImplement the FizzBuzz function.\n\nGiven an integer n, return:\n- \"FizzBuzz\" if n is divisible by both 3 and 5\n- \"Fizz\" if n is divisible by 3 (but not 5)\n- \"Buzz\" if n is divisible by 5 (but not 3)\n- The number as a string otherwise\n\nYour function must work for ANY positive integer.\n\n## Function Signature\n```python\ndef fizzbuzz(n: int) -> str:\n    # Your implementation here\n```\n\n## Examples\n  fizzbuzz(57) -> 'Fizz'\n  fizzbuzz(90) -> 'FizzBuzz'\n  fizzbuzz(9) -> 'Fizz'\n\nWrite ONLY the complete function implementation that works for ALL inputs, not just the examples."
+  },
+  {
+    "problem_id": "reverse_string_1",
+    "problem_type": "reverse_string",
+    "title": "Reverse String",
+    "description": "Implement a function to reverse a string.\n\nGiven a string s, return it reversed.\n\nExamples:\n- \"hello\" -> \"olleh\"\n- \"world\" -> \"dlrow\"\n\nYour function must work for ANY string.",
+    "function_signature": "def reverse_string(s: str) -> str:",
+    "test_cases": [
+      {
+        "input_args": [
+          "hello"
+        ],
+        "expected_output": "olleh"
+      },
+      {
+        "input_args": [
+          "data"
+        ],
+        "expected_output": "atad"
+      },
+      {
+        "input_args": [
+          "python"
+        ],
+        "expected_output": "nohtyp"
+      },
+      {
+        "input_args": [
+          "science1"
+        ],
+        "expected_output": "1ecneics"
+      },
+      {
+        "input_args": [
+          "data"
+        ],
+        "expected_output": "atad"
+      }
+    ],
+    "prompt": "Solve the following problem by implementing the function.\n\n## Problem: Reverse String\n\nImplement a function to reverse a string.\n\nGiven a string s, return it reversed.\n\nExamples:\n- \"hello\" -> \"olleh\"\n- \"world\" -> \"dlrow\"\n\nYour function must work for ANY string.\n\n## Function Signature\n```python\ndef reverse_string(s: str) -> str:\n    # Your implementation here\n```\n\n## Examples\n  reverse_string('hello') -> 'olleh'\n  reverse_string('data') -> 'atad'\n  reverse_string('python') -> 'nohtyp'\n\nWrite ONLY the complete function implementation that works for ALL inputs, not just the examples."
+  },
+  {
+    "problem_id": "reverse_string_2",
+    "problem_type": "reverse_string",
+    "title": "Reverse String",
+    "description": "Implement a function to reverse a string.\n\nGiven a string s, return it reversed.\n\nExamples:\n- \"hello\" -> \"olleh\"\n- \"world\" -> \"dlrow\"\n\nYour function must work for ANY string.",
+    "function_signature": "def reverse_string(s: str) -> str:",
+    "test_cases": [
+      {
+        "input_args": [
+          "python"
+        ],
+        "expected_output": "nohtyp"
+      },
+      {
+        "input_args": [
+          "ab8"
+        ],
+        "expected_output": "8ba"
+      },
+      {
+        "input_args": [
+          "algorithm2"
+        ],
+        "expected_output": "2mhtirogla"
+      },
+      {
+        "input_args": [
+          "testing"
+        ],
+        "expected_output": "gnitset"
+      },
+      {
+        "input_args": [
+          "a"
+        ],
+        "expected_output": "a"
+      }
+    ],
+    "prompt": "Solve the following problem by implementing the function.\n\n## Problem: Reverse String\n\nImplement a function to reverse a string.\n\nGiven a string s, return it reversed.\n\nExamples:\n- \"hello\" -> \"olleh\"\n- \"world\" -> \"dlrow\"\n\nYour function must work for ANY string.\n\n## Function Signature\n```python\ndef reverse_string(s: str) -> str:\n    # Your implementation here\n```\n\n## Examples\n  reverse_string('python') -> 'nohtyp'\n  reverse_string('ab8') -> '8ba'\n  reverse_string('algorithm2') -> '2mhtirogla'\n\nWrite ONLY the complete function implementation that works for ALL inputs, not just the examples."
+  },
+  {
+    "problem_id": "fibonacci_1",
+    "problem_type": "fibonacci",
+    "title": "Fibonacci Number",
+    "description": "Implement a function to compute the nth Fibonacci number.\n\nThe Fibonacci sequence is: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...\n- F(0) = 0\n- F(1) = 1\n- F(n) = F(n-1) + F(n-2) for n > 1\n\nYour function must work for any non-negative integer n.",
+    "function_signature": "def fibonacci(n: int) -> int:",
+    "test_cases": [
+      {
+        "input_args": [
+          1
+        ],
+        "expected_output": 1
+      },
+      {
+        "input_args": [
+          8
+        ],
+        "expected_output": 21
+      },
+      {
+        "input_args": [
+          0
+        ],
+        "expected_output": 0
+      },
+      {
+        "input_args": [
+          10
+        ],
+        "expected_output": 55
+      },
+      {
+        "input_args": [
+          11
+        ],
+        "expected_output": 89
+      }
+    ],
+    "prompt": "Solve the following problem by implementing the function.\n\n## Problem: Fibonacci Number\n\nImplement a function to compute the nth Fibonacci number.\n\nThe Fibonacci sequence is: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...\n- F(0) = 0\n- F(1) = 1\n- F(n) = F(n-1) + F(n-2) for n > 1\n\nYour function must work for any non-negative integer n.\n\n## Function Signature\n```python\ndef fibonacci(n: int) -> int:\n    # Your implementation here\n```\n\n## Examples\n  fibonacci(1) -> 1\n  fibonacci(8) -> 21\n  fibonacci(0) -> 0\n\nWrite ONLY the complete function implementation that works for ALL inputs, not just the examples."
+  },
+  {
+    "problem_id": "fibonacci_2",
+    "problem_type": "fibonacci",
+    "title": "Fibonacci Number",
+    "description": "Implement a function to compute the nth Fibonacci number.\n\nThe Fibonacci sequence is: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...\n- F(0) = 0\n- F(1) = 1\n- F(n) = F(n-1) + F(n-2) for n > 1\n\nYour function must work for any non-negative integer n.",
+    "function_signature": "def fibonacci(n: int) -> int:",
+    "test_cases": [
+      {
+        "input_args": [
+          0
+        ],
+        "expected_output": 0
+      },
+      {
+        "input_args": [
+          4
+        ],
+        "expected_output": 3
+      },
+      {
+        "input_args": [
+          2
+        ],
+        "expected_output": 1
+      },
+      {
+        "input_args": [
+          14
+        ],
+        "expected_output": 377
+      },
+      {
+        "input_args": [
+          1
+        ],
+        "expected_output": 1
+      }
+    ],
+    "prompt": "Solve the following problem by implementing the function.\n\n## Problem: Fibonacci Number\n\nImplement a function to compute the nth Fibonacci number.\n\nThe Fibonacci sequence is: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...\n- F(0) = 0\n- F(1) = 1\n- F(n) = F(n-1) + F(n-2) for n > 1\n\nYour function must work for any non-negative integer n.\n\n## Function Signature\n```python\ndef fibonacci(n: int) -> int:\n    # Your implementation here\n```\n\n## Examples\n  fibonacci(0) -> 0\n  fibonacci(4) -> 3\n  fibonacci(2) -> 1\n\nWrite ONLY the complete function implementation that works for ALL inputs, not just the examples."
+  },
+  {
+    "problem_id": "binary_search_1",
+    "problem_type": "binary_search",
+    "title": "Binary Search",
+    "description": "Implement binary search to find a target in a sorted array.\n\nGiven a sorted array of integers and a target value, return the index\nof the target if found, or -1 if not found.\n\nThe array is sorted in ascending order and contains no duplicates.\n\nYour function must work for any sorted array and target.",
+    "function_signature": "def binary_search(nums: list, target: int) -> int:",
+    "test_cases": [
+      {
+        "input_args": [
+          [
+            4,
+            19,
+            27,
+            91,
+            95
+          ],
+          35
+        ],
+        "expected_output": -1
+      },
+      {
+        "input_args": [
+          [
+            22,
+            57,
+            89,
+            91,
+            92
+          ],
+          89
+        ],
+        "expected_output": 2
+      },
+      {
+        "input_args": [
+          [
+            13,
+            16,
+            25,
+            30,
+            39,
+            45,
+            50,
+            59,
+            83,
+            84,
+            90,
+            91
+          ],
+          30
+        ],
+        "expected_output": 3
+      },
+      {
+        "input_args": [
+          [
+            15,
+            16,
+            17,
+            18,
+            21,
+            25,
+            29,
+            38,
+            50,
+            62,
+            63,
+            73,
+            83,
+            92,
+            95
+          ],
+          63
+        ],
+        "expected_output": 10
+      },
+      {
+        "input_args": [
+          [
+            6,
+            16,
+            19,
+            31,
+            70,
+            75,
+            81,
+            84,
+            89,
+            96
+          ],
+          19
+        ],
+        "expected_output": 2
+      }
+    ],
+    "prompt": "Solve the following problem by implementing the function.\n\n## Problem: Binary Search\n\nImplement binary search to find a target in a sorted array.\n\nGiven a sorted array of integers and a target value, return the index\nof the target if found, or -1 if not found.\n\nThe array is sorted in ascending order and contains no duplicates.\n\nYour function must work for any sorted array and target.\n\n## Function Signature\n```python\ndef binary_search(nums: list, target: int) -> int:\n    # Your implementation here\n```\n\n## Examples\n  binary_search([4, 19, 27, 91, 95], 35) -> -1\n  binary_search([22, 57, 89, 91, 92], 89) -> 2\n  binary_search([13, 16, 25, 30, 39, 45, 50, 59, 83, 84, 90, 91], 30) -> 3\n\nWrite ONLY the complete function implementation that works for ALL inputs, not just the examples."
+  },
+  {
+    "problem_id": "binary_search_2",
+    "problem_type": "binary_search",
+    "title": "Binary Search",
+    "description": "Implement binary search to find a target in a sorted array.\n\nGiven a sorted array of integers and a target value, return the index\nof the target if found, or -1 if not found.\n\nThe array is sorted in ascending order and contains no duplicates.\n\nYour function must work for any sorted array and target.",
+    "function_signature": "def binary_search(nums: list, target: int) -> int:",
+    "test_cases": [
+      {
+        "input_args": [
+          [
+            14,
+            26,
+            28,
+            33,
+            37,
+            38,
+            41,
+            60,
+            72,
+            75,
+            88,
+            92
+          ],
+          9
+        ],
+        "expected_output": -1
+      },
+      {
+        "input_args": [
+          [
+            1,
+            18,
+            27,
+            40,
+            45,
+            66,
+            68,
+            91,
+            92
+          ],
+          3
+        ],
+        "expected_output": -1
+      },
+      {
+        "input_args": [
+          [
+            2,
+            13,
+            16,
+            32,
+            34,
+            36,
+            40,
+            41,
+            45,
+            47,
+            83,
+            98
+          ],
+          45
+        ],
+        "expected_output": 8
+      },
+      {
+        "input_args": [
+          [
+            4,
+            6,
+            9,
+            26,
+            28,
+            29,
+            38,
+            51,
+            55,
+            58,
+            62,
+            66,
+            84,
+            94,
+            95
+          ],
+          94
+        ],
+        "expected_output": 13
+      },
+      {
+        "input_args": [
+          [
+            2,
+            7,
+            18,
+            19,
+            33,
+            58,
+            59,
+            80,
+            92
+          ],
+          59
+        ],
+        "expected_output": 6
+      }
+    ],
+    "prompt": "Solve the following problem by implementing the function.\n\n## Problem: Binary Search\n\nImplement binary search to find a target in a sorted array.\n\nGiven a sorted array of integers and a target value, return the index\nof the target if found, or -1 if not found.\n\nThe array is sorted in ascending order and contains no duplicates.\n\nYour function must work for any sorted array and target.\n\n## Function Signature\n```python\ndef binary_search(nums: list, target: int) -> int:\n    # Your implementation here\n```\n\n## Examples\n  binary_search([14, 26, 28, 33, 37, 38, 41, 60, 72, 75, 88, 92], 9) -> -1\n  binary_search([1, 18, 27, 40, 45, 66, 68, 91, 92], 3) -> -1\n  binary_search([2, 13, 16, 32, 34, 36, 40, 41, 45, 47, 83, 98], 45) -> 8\n\nWrite ONLY the complete function implementation that works for ALL inputs, not just the examples."
+  },
+  {
+    "problem_id": "max_subarray_1",
+    "problem_type": "max_subarray",
+    "title": "Maximum Subarray Sum",
+    "description": "Find the contiguous subarray with the largest sum.\n\nGiven an integer array, find the contiguous subarray (containing at least one number)\nwhich has the largest sum and return that sum.\n\nExample:\n- [-2, 1, -3, 4, -1, 2, 1, -5, 4] -> 6 (subarray [4, -1, 2, 1])\n\nYour function must work for any integer array.",
+    "function_signature": "def max_subarray(nums: list) -> int:",
+    "test_cases": [
+      {
+        "input_args": [
+          [
+            -4,
+            -10,
+            -6,
+            9,
+            -2
+          ]
+        ],
+        "expected_output": 9
+      },
+      {
+        "input_args": [
+          [
+            4,
+            -5,
+            -10,
+            4,
+            -2
+          ]
+        ],
+        "expected_output": 4
+      },
+      {
+        "input_args": [
+          [
+            4,
+            -3,
+            -4,
+            10,
+            -7,
+            -1,
+            2,
+            1,
+            10,
+            -7,
+            4,
+            3
+          ]
+        ],
+        "expected_output": 15
+      },
+      {
+        "input_args": [
+          [
+            5,
+            -1,
+            10,
+            -7,
+            -6,
+            -6,
+            5,
+            5
+          ]
+        ],
+        "expected_output": 14
+      },
+      {
+        "input_args": [
+          [
+            -4,
+            2,
+            5,
+            -7,
+            8,
+            -3,
+            7
+          ]
+        ],
+        "expected_output": 12
+      }
+    ],
+    "prompt": "Solve the following problem by implementing the function.\n\n## Problem: Maximum Subarray Sum\n\nFind the contiguous subarray with the largest sum.\n\nGiven an integer array, find the contiguous subarray (containing at least one number)\nwhich has the largest sum and return that sum.\n\nExample:\n- [-2, 1, -3, 4, -1, 2, 1, -5, 4] -> 6 (subarray [4, -1, 2, 1])\n\nYour function must work for any integer array.\n\n## Function Signature\n```python\ndef max_subarray(nums: list) -> int:\n    # Your implementation here\n```\n\n## Examples\n  max_subarray([-4, -10, -6, 9, -2]) -> 9\n  max_subarray([4, -5, -10, 4, -2]) -> 4\n  max_subarray([4, -3, -4, 10, -7, -1, 2, 1, 10, -7, 4, 3]) -> 15\n\nWrite ONLY the complete function implementation that works for ALL inputs, not just the examples."
+  },
+  {
+    "problem_id": "max_subarray_2",
+    "problem_type": "max_subarray",
+    "title": "Maximum Subarray Sum",
+    "description": "Find the contiguous subarray with the largest sum.\n\nGiven an integer array, find the contiguous subarray (containing at least one number)\nwhich has the largest sum and return that sum.\n\nExample:\n- [-2, 1, -3, 4, -1, 2, 1, -5, 4] -> 6 (subarray [4, -1, 2, 1])\n\nYour function must work for any integer array.",
+    "function_signature": "def max_subarray(nums: list) -> int:",
+    "test_cases": [
+      {
+        "input_args": [
+          [
+            10,
+            0,
+            -7,
+            -6,
+            7,
+            10,
+            -3,
+            10,
+            -9,
+            8,
+            1,
+            -5,
+            5,
+            4,
+            8
+          ]
+        ],
+        "expected_output": 36
+      },
+      {
+        "input_args": [
+          [
+            -1,
+            -1,
+            -4,
+            -7,
+            -4,
+            0,
+            -2,
+            7,
+            1,
+            -8,
+            -2,
+            6,
+            1,
+            6,
+            -10
+          ]
+        ],
+        "expected_output": 13
+      },
+      {
+        "input_args": [
+          [
+            6,
+            -4,
+            -1,
+            -8,
+            -10,
+            4,
+            0
+          ]
+        ],
+        "expected_output": 6
+      },
+      {
+        "input_args": [
+          [
+            -1,
+            1,
+            -10,
+            -2,
+            10,
+            1
+          ]
+        ],
+        "expected_output": 11
+      },
+      {
+        "input_args": [
+          [
+            -7,
+            -3,
+            -10,
+            6,
+            7,
+            3,
+            -4,
+            5,
+            5
+          ]
+        ],
+        "expected_output": 22
+      }
+    ],
+    "prompt": "Solve the following problem by implementing the function.\n\n## Problem: Maximum Subarray Sum\n\nFind the contiguous subarray with the largest sum.\n\nGiven an integer array, find the contiguous subarray (containing at least one number)\nwhich has the largest sum and return that sum.\n\nExample:\n- [-2, 1, -3, 4, -1, 2, 1, -5, 4] -> 6 (subarray [4, -1, 2, 1])\n\nYour function must work for any integer array.\n\n## Function Signature\n```python\ndef max_subarray(nums: list) -> int:\n    # Your implementation here\n```\n\n## Examples\n  max_subarray([10, 0, -7, -6, 7, 10, -3, 10, -9, 8, 1, -5, 5, 4, 8]) -> 36\n  max_subarray([-1, -1, -4, -7, -4, 0, -2, 7, 1, -8, -2, 6, 1, 6, -10]) -> 13\n  max_subarray([6, -4, -1, -8, -10, 4, 0]) -> 6\n\nWrite ONLY the complete function implementation that works for ALL inputs, not just the examples."
+  }
+]

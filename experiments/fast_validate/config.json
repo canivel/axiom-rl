@@ -1,0 +1,19 @@
+{
+  "experiment_name": "fast_validate",
+  "base_model": "Qwen/Qwen2.5-Coder-0.5B-Instruct",
+  "problem_types": [
+    "fibonacci",
+    "remove_duplicates"
+  ],
+  "train_problems_per_type": 5,
+  "val_problems_per_type": 5,
+  "test_problems_per_type": 5,
+  "test_cases_per_problem": 5,
+  "samples_per_problem": 2,
+  "num_iterations": 2,
+  "learning_rate": 5e-05,
+  "num_epochs": 3,
+  "batch_size": 4,
+  "seed": 42,
+  "output_dir": "experiments/fast_validate"
+}

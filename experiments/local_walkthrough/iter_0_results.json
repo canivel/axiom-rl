@@ -1,0 +1,27 @@
+{
+  "iteration": 0,
+  "train": {
+    "solved": 10,
+    "total": 10,
+    "accuracy": 100.0,
+    "tests_passed": 50,
+    "tests_total": 50,
+    "test_rate": 100.0
+  },
+  "val": {
+    "solved": 5,
+    "total": 6,
+    "accuracy": 83.33333333333334,
+    "tests_passed": 25,
+    "tests_total": 30,
+    "test_rate": 83.33333333333334
+  },
+  "test": {
+    "solved": 6,
+    "total": 6,
+    "accuracy": 100.0,
+    "tests_passed": 30,
+    "tests_total": 30,
+    "test_rate": 100.0
+  }
+}

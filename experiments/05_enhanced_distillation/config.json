@@ -1,0 +1,43 @@
+{
+  "experiment_name": "enhanced_distillation",
+  "experiment_id": "05",
+  "date_created": "2025-12-05",
+  "hypothesis": "Multi-teacher distillation produces more robust reasoning patterns",
+
+  "teachers": {
+    "claude": {
+      "model": "claude-sonnet-4-20250514",
+      "provider": "anthropic"
+    },
+    "gemini": {
+      "model": "gemini-2.5-flash",
+      "provider": "google"
+    }
+  },
+
+  "generation": {
+    "problem_types": [
+      "rpn", "arithmetic", "parentheses",
+      "fizzbuzz", "reverse_string", "is_palindrome",
+      "fibonacci", "binary_search", "two_sum",
+      "max_subarray", "remove_duplicates"
+    ],
+    "problems_per_type": 10,
+    "min_difficulty": 1,
+    "max_difficulty": 7,
+    "test_cases_per_problem": 5,
+    "temperature": 0.7,
+    "seed": 42
+  },
+
+  "output": {
+    "directory": "data/coldstart_v2",
+    "claude_file": "claude_traces_v2.jsonl",
+    "gemini_file": "gemini_traces_v2.jsonl"
+  },
+
+  "success_metrics": {
+    "target_verification_rate": 0.80,
+    "min_traces_per_type": 5
+  }
+}

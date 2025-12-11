@@ -1,0 +1,25 @@
+{
+  "experiment_name": "v2_quick_test",
+  "output_dir": "experiments",
+  "base_model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+  "lora_r": 16,
+  "lora_alpha": 32,
+  "problem_types": [
+    "rpn",
+    "parentheses"
+  ],
+  "train_problems_per_type": 5,
+  "val_problems_per_type": 3,
+  "test_problems_per_type": 3,
+  "test_cases_per_problem": 3,
+  "min_difficulty": 3,
+  "max_difficulty": 7,
+  "seed": 42,
+  "num_iterations": 2,
+  "learning_rate": 5e-05,
+  "epochs_per_iteration": 2,
+  "batch_size": 1,
+  "gradient_accumulation": 4,
+  "temperature": 0.7,
+  "max_new_tokens": 512
+}

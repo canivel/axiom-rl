@@ -1,0 +1,29 @@
+{
+  "evaluation_method": "Best-of-8",
+  "model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+  "temperature": 0.7,
+  "samples_per_problem": 8,
+  "results": {
+    "binary_search": {"passed": 8, "total": 8, "accuracy": 100.0},
+    "fibonacci": {"passed": 5, "total": 8, "accuracy": 62.5},
+    "fizzbuzz": {"passed": 8, "total": 8, "accuracy": 100.0},
+    "is_palindrome": {"passed": 8, "total": 8, "accuracy": 100.0},
+    "max_subarray": {"passed": 8, "total": 8, "accuracy": 100.0},
+    "merge_sorted_arrays": {"passed": 7, "total": 8, "accuracy": 87.5},
+    "remove_duplicates": {"passed": 1, "total": 8, "accuracy": 12.5},
+    "reverse_string": {"passed": 8, "total": 8, "accuracy": 100.0},
+    "two_sum": {"passed": 8, "total": 8, "accuracy": 100.0},
+    "valid_parentheses": {"passed": 7, "total": 8, "accuracy": 87.5}
+  },
+  "summary": {
+    "total_passed": 68,
+    "total_samples": 80,
+    "overall_accuracy": 85.0,
+    "problems_needing_improvement": [
+      {"id": "remove_duplicates", "accuracy": 12.5},
+      {"id": "fibonacci", "accuracy": 62.5},
+      {"id": "merge_sorted_arrays", "accuracy": 87.5},
+      {"id": "valid_parentheses", "accuracy": 87.5}
+    ]
+  }
+}

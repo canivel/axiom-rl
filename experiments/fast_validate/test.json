@@ -1,0 +1,1053 @@
+[
+  {
+    "problem_id": "fibonacci_test_0",
+    "problem_type": "fibonacci",
+    "title": "Fibonacci Number",
+    "description": "Implement a function to compute the nth Fibonacci number.\n\nThe Fibonacci sequence is: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...\n- F(0) = 0\n- F(1) = 1\n- F(n) = F(n-1) + F(n-2) for n > 1\n\nYour function must work for any non-negative integer n.",
+    "function_signature": "def fibonacci(n: int) -> int:",
+    "test_cases": [
+      {
+        "input": [
+          6
+        ],
+        "output": 8
+      },
+      {
+        "input": [
+          3
+        ],
+        "output": 2
+      },
+      {
+        "input": [
+          8
+        ],
+        "output": 21
+      },
+      {
+        "input": [
+          1
+        ],
+        "output": 1
+      },
+      {
+        "input": [
+          0
+        ],
+        "output": 0
+      }
+    ]
+  },
+  {
+    "problem_id": "fibonacci_test_1",
+    "problem_type": "fibonacci",
+    "title": "Fibonacci Number",
+    "description": "Implement a function to compute the nth Fibonacci number.\n\nThe Fibonacci sequence is: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...\n- F(0) = 0\n- F(1) = 1\n- F(n) = F(n-1) + F(n-2) for n > 1\n\nYour function must work for any non-negative integer n.",
+    "function_signature": "def fibonacci(n: int) -> int:",
+    "test_cases": [
+      {
+        "input": [
+          0
+        ],
+        "output": 0
+      },
+      {
+        "input": [
+          12
+        ],
+        "output": 144
+      },
+      {
+        "input": [
+          2
+        ],
+        "output": 1
+      },
+      {
+        "input": [
+          6
+        ],
+        "output": 8
+      },
+      {
+        "input": [
+          1
+        ],
+        "output": 1
+      }
+    ]
+  },
+  {
+    "problem_id": "fibonacci_test_2",
+    "problem_type": "fibonacci",
+    "title": "Fibonacci Number",
+    "description": "Implement a function to compute the nth Fibonacci number.\n\nThe Fibonacci sequence is: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...\n- F(0) = 0\n- F(1) = 1\n- F(n) = F(n-1) + F(n-2) for n > 1\n\nYour function must work for any non-negative integer n.",
+    "function_signature": "def fibonacci(n: int) -> int:",
+    "test_cases": [
+      {
+        "input": [
+          5
+        ],
+        "output": 5
+      },
+      {
+        "input": [
+          0
+        ],
+        "output": 0
+      },
+      {
+        "input": [
+          4
+        ],
+        "output": 3
+      },
+      {
+        "input": [
+          1
+        ],
+        "output": 1
+      },
+      {
+        "input": [
+          6
+        ],
+        "output": 8
+      }
+    ]
+  },
+  {
+    "problem_id": "fibonacci_test_3",
+    "problem_type": "fibonacci",
+    "title": "Fibonacci Number",
+    "description": "Implement a function to compute the nth Fibonacci number.\n\nThe Fibonacci sequence is: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...\n- F(0) = 0\n- F(1) = 1\n- F(n) = F(n-1) + F(n-2) for n > 1\n\nYour function must work for any non-negative integer n.",
+    "function_signature": "def fibonacci(n: int) -> int:",
+    "test_cases": [
+      {
+        "input": [
+          0
+        ],
+        "output": 0
+      },
+      {
+        "input": [
+          7
+        ],
+        "output": 13
+      },
+      {
+        "input": [
+          6
+        ],
+        "output": 8
+      },
+      {
+        "input": [
+          10
+        ],
+        "output": 55
+      },
+      {
+        "input": [
+          1
+        ],
+        "output": 1
+      }
+    ]
+  },
+  {
+    "problem_id": "fibonacci_test_4",
+    "problem_type": "fibonacci",
+    "title": "Fibonacci Number",
+    "description": "Implement a function to compute the nth Fibonacci number.\n\nThe Fibonacci sequence is: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...\n- F(0) = 0\n- F(1) = 1\n- F(n) = F(n-1) + F(n-2) for n > 1\n\nYour function must work for any non-negative integer n.",
+    "function_signature": "def fibonacci(n: int) -> int:",
+    "test_cases": [
+      {
+        "input": [
+          2
+        ],
+        "output": 1
+      },
+      {
+        "input": [
+          1
+        ],
+        "output": 1
+      },
+      {
+        "input": [
+          6
+        ],
+        "output": 8
+      },
+      {
+        "input": [
+          13
+        ],
+        "output": 233
+      },
+      {
+        "input": [
+          0
+        ],
+        "output": 0
+      }
+    ]
+  },
+  {
+    "problem_id": "remove_duplicates_test_0",
+    "problem_type": "remove_duplicates",
+    "title": "Remove Duplicates from Sorted List",
+    "description": "Given a sorted list, remove duplicates and return the new list.\n\nThe input list is sorted in ascending order.\nReturn a new list with duplicates removed, maintaining sorted order.\n\nExample:\n- [1, 1, 2, 2, 3] -> [1, 2, 3]\n- [1, 1, 1] -> [1]\n\nYour function must work for any sorted list.",
+    "function_signature": "def remove_duplicates(nums: list) -> list:",
+    "test_cases": [
+      {
+        "input": [
+          [
+            8,
+            11,
+            11,
+            11,
+            20,
+            24,
+            24,
+            39,
+            39,
+            39,
+            47,
+            47,
+            47,
+            48,
+            48
+          ]
+        ],
+        "output": [
+          8,
+          11,
+          20,
+          24,
+          39,
+          47,
+          48
+        ]
+      },
+      {
+        "input": [
+          [
+            5,
+            5,
+            5,
+            7,
+            7,
+            7,
+            13,
+            16,
+            16,
+            16,
+            20,
+            38,
+            38,
+            41,
+            41,
+            41,
+            45,
+            45,
+            46,
+            46,
+            46
+          ]
+        ],
+        "output": [
+          5,
+          7,
+          13,
+          16,
+          20,
+          38,
+          41,
+          45,
+          46
+        ]
+      },
+      {
+        "input": [
+          [
+            1,
+            1,
+            5,
+            5,
+            7,
+            7,
+            7,
+            22,
+            22,
+            27,
+            27,
+            27,
+            32,
+            33,
+            33,
+            42
+          ]
+        ],
+        "output": [
+          1,
+          5,
+          7,
+          22,
+          27,
+          32,
+          33,
+          42
+        ]
+      },
+      {
+        "input": [
+          [
+            16,
+            18,
+            18,
+            21,
+            21,
+            28,
+            30,
+            30,
+            31,
+            31,
+            31,
+            35,
+            35,
+            35,
+            38,
+            38,
+            38,
+            40,
+            40,
+            42,
+            42,
+            48
+          ]
+        ],
+        "output": [
+          16,
+          18,
+          21,
+          28,
+          30,
+          31,
+          35,
+          38,
+          40,
+          42,
+          48
+        ]
+      },
+      {
+        "input": [
+          [
+            12,
+            12,
+            12,
+            14,
+            17,
+            17,
+            17,
+            18,
+            21,
+            22,
+            23,
+            23,
+            23,
+            32,
+            32,
+            39,
+            39,
+            42,
+            42,
+            42
+          ]
+        ],
+        "output": [
+          12,
+          14,
+          17,
+          18,
+          21,
+          22,
+          23,
+          32,
+          39,
+          42
+        ]
+      }
+    ]
+  },
+  {
+    "problem_id": "remove_duplicates_test_1",
+    "problem_type": "remove_duplicates",
+    "title": "Remove Duplicates from Sorted List",
+    "description": "Given a sorted list, remove duplicates and return the new list.\n\nThe input list is sorted in ascending order.\nReturn a new list with duplicates removed, maintaining sorted order.\n\nExample:\n- [1, 1, 2, 2, 3] -> [1, 2, 3]\n- [1, 1, 1] -> [1]\n\nYour function must work for any sorted list.",
+    "function_signature": "def remove_duplicates(nums: list) -> list:",
+    "test_cases": [
+      {
+        "input": [
+          [
+            29,
+            31,
+            32,
+            32,
+            42,
+            45,
+            45,
+            46,
+            46,
+            46
+          ]
+        ],
+        "output": [
+          29,
+          31,
+          32,
+          42,
+          45,
+          46
+        ]
+      },
+      {
+        "input": [
+          [
+            20,
+            20,
+            20,
+            24,
+            24,
+            31,
+            31,
+            36,
+            36,
+            36,
+            38,
+            38,
+            38,
+            43,
+            43
+          ]
+        ],
+        "output": [
+          20,
+          24,
+          31,
+          36,
+          38,
+          43
+        ]
+      },
+      {
+        "input": [
+          [
+            8,
+            8,
+            13,
+            15,
+            15,
+            15,
+            17,
+            17,
+            17,
+            18,
+            18,
+            18,
+            20,
+            30,
+            45
+          ]
+        ],
+        "output": [
+          8,
+          13,
+          15,
+          17,
+          18,
+          20,
+          30,
+          45
+        ]
+      },
+      {
+        "input": [
+          [
+            7,
+            7,
+            13,
+            15,
+            15,
+            18,
+            19,
+            19,
+            19,
+            34,
+            34,
+            34,
+            38,
+            39,
+            39,
+            44,
+            47
+          ]
+        ],
+        "output": [
+          7,
+          13,
+          15,
+          18,
+          19,
+          34,
+          38,
+          39,
+          44,
+          47
+        ]
+      },
+      {
+        "input": [
+          [
+            1,
+            1,
+            7,
+            7,
+            9,
+            19,
+            31,
+            31,
+            32,
+            32,
+            37,
+            40,
+            41,
+            41,
+            45,
+            45,
+            49
+          ]
+        ],
+        "output": [
+          1,
+          7,
+          9,
+          19,
+          31,
+          32,
+          37,
+          40,
+          41,
+          45,
+          49
+        ]
+      }
+    ]
+  },
+  {
+    "problem_id": "remove_duplicates_test_2",
+    "problem_type": "remove_duplicates",
+    "title": "Remove Duplicates from Sorted List",
+    "description": "Given a sorted list, remove duplicates and return the new list.\n\nThe input list is sorted in ascending order.\nReturn a new list with duplicates removed, maintaining sorted order.\n\nExample:\n- [1, 1, 2, 2, 3] -> [1, 2, 3]\n- [1, 1, 1] -> [1]\n\nYour function must work for any sorted list.",
+    "function_signature": "def remove_duplicates(nums: list) -> list:",
+    "test_cases": [
+      {
+        "input": [
+          [
+            10,
+            20,
+            37
+          ]
+        ],
+        "output": [
+          10,
+          20,
+          37
+        ]
+      },
+      {
+        "input": [
+          [
+            15,
+            15,
+            15,
+            20,
+            20,
+            25,
+            25,
+            27,
+            27,
+            27,
+            29,
+            29,
+            29,
+            34,
+            39,
+            39,
+            39,
+            40,
+            40,
+            40,
+            41,
+            47,
+            49,
+            49,
+            49
+          ]
+        ],
+        "output": [
+          15,
+          20,
+          25,
+          27,
+          29,
+          34,
+          39,
+          40,
+          41,
+          47,
+          49
+        ]
+      },
+      {
+        "input": [
+          [
+            6,
+            6,
+            6,
+            11,
+            12,
+            16,
+            17,
+            17,
+            43,
+            43
+          ]
+        ],
+        "output": [
+          6,
+          11,
+          12,
+          16,
+          17,
+          43
+        ]
+      },
+      {
+        "input": [
+          [
+            3,
+            3,
+            3,
+            5,
+            15,
+            15,
+            17,
+            19,
+            19,
+            19,
+            30,
+            38,
+            38,
+            38,
+            46,
+            47,
+            47,
+            49
+          ]
+        ],
+        "output": [
+          3,
+          5,
+          15,
+          17,
+          19,
+          30,
+          38,
+          46,
+          47,
+          49
+        ]
+      },
+      {
+        "input": [
+          [
+            4,
+            4,
+            4,
+            11,
+            11,
+            11,
+            20,
+            20,
+            39,
+            39
+          ]
+        ],
+        "output": [
+          4,
+          11,
+          20,
+          39
+        ]
+      }
+    ]
+  },
+  {
+    "problem_id": "remove_duplicates_test_3",
+    "problem_type": "remove_duplicates",
+    "title": "Remove Duplicates from Sorted List",
+    "description": "Given a sorted list, remove duplicates and return the new list.\n\nThe input list is sorted in ascending order.\nReturn a new list with duplicates removed, maintaining sorted order.\n\nExample:\n- [1, 1, 2, 2, 3] -> [1, 2, 3]\n- [1, 1, 1] -> [1]\n\nYour function must work for any sorted list.",
+    "function_signature": "def remove_duplicates(nums: list) -> list:",
+    "test_cases": [
+      {
+        "input": [
+          [
+            20,
+            20,
+            26,
+            26,
+            26,
+            30,
+            30,
+            30,
+            45,
+            45
+          ]
+        ],
+        "output": [
+          20,
+          26,
+          30,
+          45
+        ]
+      },
+      {
+        "input": [
+          [
+            2,
+            2,
+            2,
+            3,
+            3,
+            3,
+            6,
+            6,
+            6,
+            15,
+            17,
+            17,
+            17,
+            21,
+            21,
+            28,
+            28,
+            28,
+            39,
+            48,
+            49,
+            49
+          ]
+        ],
+        "output": [
+          2,
+          3,
+          6,
+          15,
+          17,
+          21,
+          28,
+          39,
+          48,
+          49
+        ]
+      },
+      {
+        "input": [
+          [
+            6,
+            6,
+            12,
+            12,
+            18,
+            18,
+            23,
+            23,
+            23,
+            28,
+            29,
+            31,
+            31,
+            32,
+            32,
+            38,
+            38,
+            38,
+            41,
+            41,
+            42,
+            42
+          ]
+        ],
+        "output": [
+          6,
+          12,
+          18,
+          23,
+          28,
+          29,
+          31,
+          32,
+          38,
+          41,
+          42
+        ]
+      },
+      {
+        "input": [
+          [
+            3,
+            3,
+            6,
+            6,
+            6,
+            8,
+            17,
+            17,
+            17,
+            21,
+            21,
+            21,
+            30,
+            30,
+            36,
+            36,
+            44,
+            49
+          ]
+        ],
+        "output": [
+          3,
+          6,
+          8,
+          17,
+          21,
+          30,
+          36,
+          44,
+          49
+        ]
+      },
+      {
+        "input": [
+          [
+            4,
+            4,
+            9,
+            9,
+            9,
+            14,
+            14,
+            18,
+            19,
+            24,
+            24,
+            24,
+            29,
+            29,
+            29,
+            32,
+            36,
+            36,
+            36,
+            40,
+            41,
+            41
+          ]
+        ],
+        "output": [
+          4,
+          9,
+          14,
+          18,
+          19,
+          24,
+          29,
+          32,
+          36,
+          40,
+          41
+        ]
+      }
+    ]
+  },
+  {
+    "problem_id": "remove_duplicates_test_4",
+    "problem_type": "remove_duplicates",
+    "title": "Remove Duplicates from Sorted List",
+    "description": "Given a sorted list, remove duplicates and return the new list.\n\nThe input list is sorted in ascending order.\nReturn a new list with duplicates removed, maintaining sorted order.\n\nExample:\n- [1, 1, 2, 2, 3] -> [1, 2, 3]\n- [1, 1, 1] -> [1]\n\nYour function must work for any sorted list.",
+    "function_signature": "def remove_duplicates(nums: list) -> list:",
+    "test_cases": [
+      {
+        "input": [
+          [
+            1,
+            1,
+            1,
+            6,
+            6,
+            6,
+            8,
+            8,
+            10,
+            10,
+            15,
+            15,
+            19,
+            19,
+            27,
+            30,
+            30,
+            32,
+            32,
+            32,
+            36,
+            44,
+            44
+          ]
+        ],
+        "output": [
+          1,
+          6,
+          8,
+          10,
+          15,
+          19,
+          27,
+          30,
+          32,
+          36,
+          44
+        ]
+      },
+      {
+        "input": [
+          [
+            5,
+            5,
+            9,
+            9,
+            9,
+            18,
+            18,
+            27,
+            33,
+            33,
+            39,
+            39,
+            39
+          ]
+        ],
+        "output": [
+          5,
+          9,
+          18,
+          27,
+          33,
+          39
+        ]
+      },
+      {
+        "input": [
+          [
+            10,
+            10,
+            29,
+            29,
+            32,
+            32,
+            35,
+            35,
+            35,
+            38,
+            38,
+            38,
+            43,
+            43,
+            49,
+            49
+          ]
+        ],
+        "output": [
+          10,
+          29,
+          32,
+          35,
+          38,
+          43,
+          49
+        ]
+      },
+      {
+        "input": [
+          [
+            3,
+            3,
+            13,
+            13,
+            13,
+            15,
+            15,
+            16,
+            16,
+            16,
+            25,
+            25,
+            27,
+            27,
+            37,
+            37,
+            37,
+            45,
+            45,
+            45
+          ]
+        ],
+        "output": [
+          3,
+          13,
+          15,
+          16,
+          25,
+          27,
+          37,
+          45
+        ]
+      },
+      {
+        "input": [
+          [
+            3,
+            3,
+            9,
+            32,
+            32,
+            33,
+            38,
+            38,
+            38
+          ]
+        ],
+        "output": [
+          3,
+          9,
+          32,
+          33,
+          38
+        ]
+      }
+    ]
+  }
+]

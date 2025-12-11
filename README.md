@@ -295,15 +295,14 @@ Investigated whether GRPO or curriculum learning can help the 0.5B model learn N
 ├────────────────────────────────────────────────────────────┤
 │                                                            │
 │  Approach A: Standard GRPO (5 steps)                       │
-│    Result: 40% (unchanged)                                 │
-│    Model outputs: 2258753, 40320 (8!), 2113 (wrong!)      │
+│    Result: 40% (unchanged from baseline)                   │
 │                                                            │
-│  Approach B: Curriculum Learning (n=1,2,3,4)               │
-│    Result: Avg reward 0.11 (need 0.6 for promotion)       │
-│    Model outputs: 16777216 (2^24), 40320 (8!)             │
-│    Even trivial cases fail!                                │
+│  Approach B: Curriculum Learning (27 steps)                │
+│    Result: 0% FINAL (WORSE than 40% baseline!)            │
+│    Loss exploded: -0.12 -> -6.57                          │
+│    Model got MORE confident in wrong answers              │
 │                                                            │
-│  Correct answers: n=1->1, n=2->0, n=3->0, n=4->2          │
+│  Key insight: GRPO without exploration success is harmful │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
 ```
@@ -317,16 +316,50 @@ Investigated whether GRPO or curriculum learning can help the 0.5B model learn N
 
 The capacity threshold for backtracking is between **0.5B and 1.5B parameters**.
 
-**Alternative models to research:**
-- DeepSeek-Coder-1.3B (different architecture)
-- Phi-2 (2.7B, Microsoft)
-- StarCoder2-3B (code-focused)
+**Alternative models tested:**
+- DeepSeek-Coder-1.3B: 90% overall but **still 40% on N-Queens** (see Experiment 13)
+- Threshold is between 1.3B and 1.5B for N-Queens specifically
 
 ```bash
 # Reproduce the experiments
 uv run python scripts/run_grpo_hard.py --problems n_queens --steps 5 --difficulty 4
 uv run python scripts/run_grpo_nqueens_curriculum.py --steps-per-level 5 --low-memory
 ```
+
+### Experiment 13: DeepSeek Architecture Test
+
+**Status:** Completed | [Full Report](experiments/13_deepseek_architecture_test/README.md)
+
+Tested whether DeepSeek-Coder-1.3B (different architecture) can solve N-Queens.
+
+```
+┌────────────────────────────────────────────────────────────┐
+│           DEEPSEEK 1.3B: N-QUEENS STILL FAILS              │
+├────────────────────────────────────────────────────────────┤
+│                                                            │
+│  Overall Hard Problems: 90% (9/10) - Much better!         │
+│  N-Queens Specifically: 40% - Same as Qwen 0.5B!          │
+│                                                            │
+│  Model         Params    Overall    N-Queens              │
+│  ─────────────────────────────────────────────            │
+│  Qwen 0.5B     494M      60%        40%                   │
+│  DeepSeek 1.3B 1.3B      90%        40%  <-- Same!        │
+│  Qwen 1.5B     1.5B      ~95%       100%                  │
+│                                                            │
+└────────────────────────────────────────────────────────────┘
+```
+
+**Key Finding**: N-Queens requires a specific threshold between 1.3B-1.5B parameters, regardless of architecture.
+
+**Complete Model Comparison:**
+
+| Model | Params | Overall | N-Queens | Fits 10GB? |
+|-------|--------|---------|----------|------------|
+| Qwen 0.5B | 494M | 60% | 40% | Yes |
+| DeepSeek 1.3B | 1.3B | 90% | 40% | Yes |
+| **Qwen 1.5B** | **1.5B** | **90%** | **100%** | **Yes** |
+
+**Recommendation**: Use **Qwen2.5-Coder-1.5B-Instruct** as the minimum viable model for full algorithmic coverage.
 
 ---
 
