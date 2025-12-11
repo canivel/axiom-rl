@@ -28,6 +28,7 @@ dependencies = [
     "peft>=0.7.0",
     "datasets>=2.14.0",
     "google-generativeai>=0.8.0",
+    "anthropic>=0.40.0",
     "python-dotenv>=1.0.0",
 ]
 

@@ -5,13 +5,30 @@ import time
 from dataclasses import dataclass, asdict
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union, Protocol
 
 from ..problems.base import Problem
 from ..problems.dataset import ProblemDataset
 from ..verifier.harness import TestHarness
 from ..verifier.result import VerificationStatus
 from .gemini_client import GeminiClient
+from .claude_client import ClaudeClient
+
+
+class TeacherClient(Protocol):
+    """Protocol for teacher model clients (Gemini, Claude, etc.)."""
+
+    model_name: str
+
+    def generate_reasoning_trace(
+        self,
+        problem_title: str,
+        problem_description: str,
+        function_signature: str,
+        temperature: float = 0.7,
+    ) -> object:
+        """Generate a reasoning trace for a problem."""
+        ...
 
 
 @dataclass
@@ -36,14 +53,18 @@ class ReasoningTraceGenerator:
     Generates reasoning traces for problems using a teacher model.
 
     This implements the "Cold Start" phase:
-    1. Use a strong model (Gemini) to generate reasoning + code
+    1. Use a strong model (Gemini/Claude) to generate reasoning + code
     2. Verify the code actually works
     3. Save verified traces for training
+
+    Supports multiple teacher models:
+    - GeminiClient: Google's Gemini models
+    - ClaudeClient: Anthropic's Claude models
     """
 
     def __init__(
         self,
-        client: Optional[GeminiClient] = None,
+        client: Optional[Union[GeminiClient, ClaudeClient]] = None,
         output_dir: Path = Path("data/coldstart"),
         output_file: str = "teacher_traces.jsonl",
     ):
@@ -51,7 +72,8 @@ class ReasoningTraceGenerator:
         Initialize the generator.
 
         Args:
-            client: GeminiClient instance (creates default if None)
+            client: TeacherClient instance (GeminiClient or ClaudeClient)
+                   Creates default GeminiClient if None
             output_dir: Directory to save traces
             output_file: Filename for output JSONL
         """

@@ -60,4 +60,12 @@ Thumbs.db
 logs/
 private/
 
-.env*.safetensors
+# Environment files
+.env
+.env.*
+
+# Models (large files)
+models/
+
+# Data files (large)
+data/
