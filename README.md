@@ -363,6 +363,68 @@ Tested whether DeepSeek-Coder-1.3B (different architecture) can solve N-Queens.
 
 ---
 
+### Experiment 15: M-GRPO with Entropy Control (Current)
+
+**Status:** In Progress | [Full Report](experiments/15_mgrpo_entropy/README.md)
+
+Implementing **M-GRPO (Momentum-Anchored GRPO)** - a stabilized reinforcement learning technique that prevents policy collapse through dual-model architecture.
+
+```
+┌────────────────────────────────────────────────────────────┐
+│           M-GRPO: MOMENTUM-ANCHORED TRAINING               │
+├────────────────────────────────────────────────────────────┤
+│                                                            │
+│  The Problem with Standard GRPO:                          │
+│    Step 1:  entropy=0.8 ✓ Diverse                         │
+│    Step 10: entropy=0.2 ⚠️ Overconfident                  │
+│    Step 15: entropy=0.01 ❌ COLLAPSED                     │
+│                                                            │
+│  M-GRPO Solution: Two Models                              │
+│    • Policy Model: Learns and improves                    │
+│    • Momentum Model: Slow EMA, provides stability         │
+│                                                            │
+│  EMA Update: θ_momentum = 0.99 * θ_momentum + 0.01 * θ_policy │
+│                                                            │
+│  Combined sampling from BOTH models prevents collapse     │
+│                                                            │
+└────────────────────────────────────────────────────────────┘
+```
+
+**Key Innovations:**
+- **Momentum Model**: EMA of policy weights, provides stable reference distribution
+- **Combined Rollout**: Sample from both policy (4) and momentum (4) models
+- **Partial Rewards**: `reward = passed_tests / total_tests` (not binary)
+- **IQR Filtering**: Remove low-entropy samples that indicate overconfidence
+
+**Training Progress (Steps 0-10):**
+
+| Step | Success Rate | Avg Reward | Entropy | Status |
+|------|--------------|------------|---------|--------|
+| 0 | 50% | 0.50 | 0.93 | Learning |
+| 5 | 100% | 0.95 | 0.74 | Strong |
+| 10 | 75% | 0.70 | 0.65 | Stable |
+
+**What We're Teaching:**
+- 6 problem types: RPN, Parentheses, Fibonacci, Binary Search, Edit Distance, Coin Change
+- Model must write Python functions that pass 5 test cases each
+- Difficulty range 4-7 (intermediate to hard)
+
+**Bugs Fixed During Development:**
+1. **Cold Start**: Model got 0 reward → Implemented partial rewards
+2. **V1/V2 Compatibility**: `tc.input` vs `tc.input_args` → Used `getattr` fallback
+3. **Markdown Extraction**: Model outputs `\`\`\`python` blocks → Added `extract_code()` parser
+
+```bash
+# Run M-GRPO training
+uv run python scripts/run_mgrpo.py --experiment 15_mgrpo_entropy --steps 20 --eval-every 2
+
+# Resume from checkpoint
+uv run python scripts/run_mgrpo.py --experiment 15_mgrpo_entropy --steps 20 \
+    --resume experiments/15_mgrpo_entropy/checkpoints/default/checkpoint_step_10
+```
+
+---
+
 ### Upcoming Phases
 
   - [x] **Phase 9: Teacher Distillation for Hard Problems** ✅ COMPLETED
@@ -370,15 +432,21 @@ Tested whether DeepSeek-Coder-1.3B (different architecture) can solve N-Queens.
       - SFT on verified traces achieved 100% accuracy on Coin Change and Knapsack
       - N-Queens needs more training data (rate-limited to 1 trace)
 
-  - [ ] **Phase 10: N-Queens and Graph Problems**
+  - [x] **Phase 14: M-GRPO Implementation** ✅ IN PROGRESS
+      - Implemented Momentum-Anchored GRPO for stable RL training
+      - Two-model architecture: policy (trainable) + momentum (EMA)
+      - Fixed cold-start with partial rewards
+      - Training showing 50-100% success rates with stable entropy
+
+  - [ ] **Phase 15: Benchmark Framework**
+      - Implement MATH500, AIME24/25, GPQA Diamond evaluations
+      - Standardized evaluation for comparing model variants
+      - Track progress across training runs
+
+  - [ ] **Phase 16: N-Queens and Graph Problems**
       - Generate more N-Queens traces (need 8+ for improvement)
       - Add graph algorithm problems (BFS, DFS, Dijkstra)
       - Apply same Teacher Distillation + GRPO pipeline
-
-  - [ ] **Phase 11: Extended Evaluation**
-      - Run 50+ GRPO steps per problem type
-      - Test for catastrophic forgetting on V2 problems
-      - Benchmark small model + RL vs large model few-shot
 
 ## 🛠️ Tech Stack
 

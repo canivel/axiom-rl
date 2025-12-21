@@ -1,0 +1,137 @@
+{
+  "experiment_name": "15_mgrpo_entropy",
+  "description": "M-GRPO with Momentum-Anchored Training and Entropy Control",
+  "date_created": "2024-12-20",
+  "status": "planned",
+  "branch": "v2-problem-design",
+
+  "hypotheses": [
+    {
+      "id": "H1",
+      "statement": "Momentum model stabilizes training by providing consistent pseudo-ground truth",
+      "metric": "reward_variance",
+      "success_criteria": "Lower variance than vanilla GRPO across 20 iterations"
+    },
+    {
+      "id": "H2",
+      "statement": "IQR filtering prevents mode collapse by removing low-entropy samples",
+      "metric": "entropy_trajectory",
+      "success_criteria": "Entropy remains above 0.1 throughout training"
+    },
+    {
+      "id": "H3",
+      "statement": "Entropy control mechanisms extend useful training beyond early phase",
+      "metric": "late_training_gains",
+      "success_criteria": "Significant accuracy gains in iterations 10-20"
+    }
+  ],
+
+  "model": {
+    "name": "Qwen/Qwen2.5-Coder-0.5B-Instruct",
+    "torch_dtype": "float16",
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": ["q_proj", "k_proj", "v_proj", "o_proj"]
+  },
+
+  "mgrpo": {
+    "num_policy_samples": 4,
+    "num_momentum_samples": 4,
+    "momentum": 0.99,
+    "beta": 0.04,
+    "use_iqr_filter": true,
+    "iqr_k": 0.75,
+    "min_entropy_threshold": 0.1,
+    "use_clip_cov": false,
+    "use_kl_cov": false
+  },
+
+  "training": {
+    "num_iterations": 20,
+    "steps_per_iteration": 10,
+    "learning_rate": 1e-5,
+    "max_seq_length": 2048,
+    "max_new_tokens": 512,
+    "temperature": 0.7,
+    "eval_every": 2
+  },
+
+  "problems": {
+    "types": [
+      "rpn",
+      "parentheses",
+      "fibonacci",
+      "binary_search",
+      "edit_distance",
+      "coin_change"
+    ],
+    "train_per_type": 10,
+    "val_per_type": 5,
+    "test_per_type": 5,
+    "test_cases_per_problem": 5,
+    "difficulty_range": [4, 7]
+  },
+
+  "ablations": {
+    "vanilla_grpo": {
+      "description": "Standard GRPO without momentum",
+      "num_momentum_samples": 0,
+      "momentum": 0,
+      "use_iqr_filter": false
+    },
+    "mgrpo_no_iqr": {
+      "description": "M-GRPO without IQR filtering",
+      "use_iqr_filter": false
+    },
+    "mgrpo_iqr": {
+      "description": "M-GRPO with IQR filtering (default)",
+      "use_iqr_filter": true
+    },
+    "mgrpo_clip_cov": {
+      "description": "M-GRPO + Clip-Cov entropy control",
+      "use_iqr_filter": true,
+      "use_clip_cov": true,
+      "clip_cov_threshold": 0.5,
+      "clip_cov_ratio": 0.1
+    },
+    "mgrpo_kl_cov": {
+      "description": "M-GRPO + KL-Cov entropy control",
+      "use_iqr_filter": true,
+      "use_kl_cov": true,
+      "kl_cov_weight": 0.1,
+      "kl_cov_threshold": 0.5
+    },
+    "mgrpo_full": {
+      "description": "M-GRPO with all entropy control mechanisms",
+      "use_iqr_filter": true,
+      "use_clip_cov": true,
+      "use_kl_cov": true
+    }
+  },
+
+  "benchmarks": {
+    "run_after_training": true,
+    "benchmarks": ["math500", "aime24", "gpqa_diamond"],
+    "max_samples_per_benchmark": null,
+    "output_dir": "benchmark_results"
+  },
+
+  "hardware": {
+    "target": "RTX-3080-10GB",
+    "fallback": ["A100-40GB", "A100-80GB"],
+    "estimated_time_hours": 4
+  },
+
+  "reproducibility": {
+    "seed": 42,
+    "deterministic": true
+  },
+
+  "outputs": {
+    "metrics_file": "metrics.jsonl",
+    "entropy_file": "entropy.json",
+    "models_dir": "models",
+    "benchmark_results_dir": "benchmark_results"
+  }
+}

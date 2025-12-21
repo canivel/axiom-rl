@@ -1,0 +1,81 @@
+{
+  "experiment": "15_mgrpo_entropy",
+  "status": "awaiting_gpu_execution",
+  "date_created": "2024-12-20",
+  "date_run": null,
+
+  "training_summary": {
+    "iterations_completed": null,
+    "total_training_time_minutes": null,
+    "final_loss": null,
+    "final_entropy": null,
+    "final_val_accuracy": null,
+    "entropy_collapsed": null
+  },
+
+  "hypothesis_results": {
+    "H1_momentum_stability": {
+      "hypothesis": "Momentum model stabilizes training by providing consistent pseudo-ground truth",
+      "metric": "reward_variance",
+      "success_criteria": "Lower variance than vanilla GRPO across 20 iterations",
+      "result": null,
+      "passed": null
+    },
+    "H2_iqr_prevents_collapse": {
+      "hypothesis": "IQR filtering prevents mode collapse by removing low-entropy samples",
+      "metric": "entropy_trajectory",
+      "success_criteria": "Entropy remains above 0.1 throughout training",
+      "result": null,
+      "passed": null
+    },
+    "H3_extended_training": {
+      "hypothesis": "Entropy control mechanisms extend useful training beyond early phase",
+      "metric": "late_training_gains",
+      "success_criteria": "Significant accuracy gains in iterations 10-20",
+      "result": null,
+      "passed": null
+    }
+  },
+
+  "benchmark_results": {
+    "math500": {
+      "total": 500,
+      "correct": null,
+      "accuracy": null
+    },
+    "gpqa_diamond": {
+      "total": 198,
+      "correct": null,
+      "accuracy": null
+    },
+    "aime24": {
+      "total": 30,
+      "correct": null,
+      "accuracy": null
+    }
+  },
+
+  "ablation_comparison": {
+    "vanilla_grpo": {
+      "final_accuracy": null,
+      "entropy_at_end": null,
+      "collapsed": null
+    },
+    "mgrpo_no_iqr": {
+      "final_accuracy": null,
+      "entropy_at_end": null,
+      "collapsed": null
+    },
+    "mgrpo_iqr": {
+      "final_accuracy": null,
+      "entropy_at_end": null,
+      "collapsed": null
+    }
+  },
+
+  "notes": [
+    "Experiment requires A100 GPU for execution",
+    "Use notebooks/experiment_15_mgrpo.ipynb in Google Colab",
+    "Fill in results after running the experiment"
+  ]
+}
