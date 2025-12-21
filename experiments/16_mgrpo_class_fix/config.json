@@ -1,0 +1,77 @@
+{
+  "experiment_name": "16_mgrpo_class_fix",
+  "description": "M-GRPO with class wrapper extraction fix and improved prompts",
+  "date": "2024-12-21",
+  "hardware": "NVIDIA T4 16GB (Google Colab)",
+
+  "changes_from_exp15": [
+    "Fixed extract_code() to handle 'class Solution' wrappers",
+    "Updated prompts to explicitly request standalone functions",
+    "Added greedy evaluation during training for early bug detection"
+  ],
+
+  "model": {
+    "name": "Qwen/Qwen2.5-Coder-0.5B-Instruct",
+    "torch_dtype": "bfloat16",
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": ["q_proj", "k_proj", "v_proj", "o_proj"]
+  },
+
+  "mgrpo": {
+    "num_policy_samples": 4,
+    "num_momentum_samples": 4,
+    "momentum": 0.99,
+    "beta": 0.04,
+    "use_iqr_filter": true,
+    "iqr_k": 0.75,
+    "min_entropy_threshold": 0.1,
+    "use_clip_cov": false,
+    "use_kl_cov": false
+  },
+
+  "training": {
+    "num_iterations": 1,
+    "steps_per_iteration": 20,
+    "learning_rate": 1e-5,
+    "max_seq_length": 1024,
+    "max_new_tokens": 512,
+    "temperature": 0.7,
+    "eval_every": 2,
+    "greedy_eval_every": 5
+  },
+
+  "problems": {
+    "types": ["rpn", "parentheses", "fibonacci", "binary_search", "edit_distance", "coin_change"],
+    "difficulty_range": [4, 7],
+    "train_per_type": 10,
+    "val_per_type": 5,
+    "test_per_type": 5,
+    "test_cases_per_problem": 5
+  },
+
+  "outputs": {
+    "models_dir": "models",
+    "checkpoints_dir": "checkpoints",
+    "logs_dir": "logs"
+  },
+
+  "benchmarks": {
+    "run_after_training": false,
+    "benchmarks": ["math500", "gpqa_diamond"],
+    "output_dir": "benchmark_results"
+  },
+
+  "reproducibility": {
+    "seed": 42
+  },
+
+  "ablations": {
+    "vanilla_grpo": {
+      "description": "Standard GRPO without momentum (for comparison)",
+      "num_momentum_samples": 0,
+      "momentum": 0.0
+    }
+  }
+}
