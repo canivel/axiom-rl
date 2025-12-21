@@ -375,9 +375,9 @@ Successfully trained **M-GRPO (Momentum-Anchored GRPO)** - a stabilized reinforc
 ╠════════════════════════════════════════════════════════════════════════════╣
 ║  Duration: 142.1 minutes (20 steps on T4 GPU)                               ║
 ║  Training Success: 99% (19/20 steps at 100%)                                ║
-║  Validation Accuracy: 40% (needs more training)                             ║
+║  Final Eval Accuracy: 10% (3/30) ← Critical bug found!                      ║
 ║  Final Entropy: 0.229 (healthy - NO COLLAPSE!)                              ║
-║  Final Loss: 0.191 (reduced from 0.221)                                     ║
+║  Issue: Model outputs "class Solution" instead of standalone function       ║
 ╚════════════════════════════════════════════════════════════════════════════╝
 ```
 
@@ -415,7 +415,15 @@ Successfully trained **M-GRPO (Momentum-Anchored GRPO)** - a stabilized reinforc
 1. **M-GRPO Works**: Momentum anchor prevented mode collapse that kills vanilla GRPO
 2. **Partial Rewards Critical**: Binary rewards gave 0 signal; proportional rewards enabled learning
 3. **Entropy Monitoring**: Dip to 0.163 at Step 11 recovered automatically
-4. **Generalization Gap**: 99% training success vs 40% validation = overfitting
+4. **Critical Bug Found**: Model outputs `class Solution` wrappers instead of standalone functions
+5. **Sampling vs Greedy**: 99% success with 8 samples ≠ 10% success with greedy decoding
+
+**Bug Fix Needed for Experiment 16:**
+```python
+# Update extract_code() to handle class wrappers
+if "class Solution:" in completion:
+    # Extract method and convert to standalone function
+```
 
 ```bash
 # Run M-GRPO training (Colab-ready)

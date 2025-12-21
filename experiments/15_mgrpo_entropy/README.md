@@ -877,11 +877,119 @@ Validation comparison:
 
 | Metric | Value | Interpretation |
 |--------|-------|----------------|
-| **Training Success** | 99% | Model CAN solve problems |
-| **Val Accuracy** | 40% | Model SOMETIMES solves new problems |
+| **Training Success** | 99% | Model CAN solve problems (in training) |
+| **Val Accuracy (during)** | 40% | Model sometimes solves val problems |
+| **Final Eval Accuracy** | **10%** | ❌ Only 3/30 problems passed |
 | **Final Entropy** | 0.229 | Healthy (>0.1 threshold) |
 | **Final Loss** | 0.191 | Lower than start (0.221) |
 | **Training Time** | 142 min | ~7 min/step on T4 (Colab) |
+
+---
+
+## 🚨 Final Evaluation Analysis: 10% Accuracy
+
+After training, a comprehensive evaluation on the full validation set revealed **critical issues**:
+
+```
+============================================================
+FINAL EVALUATION RESULTS
+============================================================
+  rpn                 : 3/5 = 60.0%
+  parentheses         : 0/5 = 0.0%
+  fibonacci           : 0/5 = 0.0%
+  binary_search       : 0/5 = 0.0%
+  edit_distance       : 0/5 = 0.0%
+  coin_change         : 0/5 = 0.0%
+----------------------------------------
+  OVERALL             : 3/30 = 10.0%
+============================================================
+```
+
+### Root Cause Analysis: Two Critical Bugs
+
+#### Bug 1: Class Wrapper Instead of Function
+
+**What the model generates:**
+```python
+from typing import List
+
+class Solution:
+    def evaluate_rpn(self, tokens: List[str]) -> int:
+        stack = []
+        for token in tokens:
+            ...
+        return stack[0]
+```
+
+**What our test harness expects:**
+```python
+def evaluate_rpn(tokens: List[str]) -> int:
+    ...
+```
+
+**Problem:** The model learned LeetCode-style `class Solution` format, but our verifier calls `evaluate_rpn(tokens)` directly - it can't find the function!
+
+**Why this happened:**
+- Base model (Qwen2.5-Coder-0.5B-Instruct) was trained on LeetCode data
+- No explicit instruction to avoid class wrappers
+- During training, samples that DID produce standalone functions got rewards
+- But the model didn't fully learn this pattern
+
+#### Bug 2: Negative Number Handling
+
+```python
+# Model's code:
+if token.isdigit():  # ❌ Returns False for "-5"!
+    stack.append(int(token))
+
+# Correct code:
+if token.lstrip('-').isdigit():  # ✅ Handles negative numbers
+    stack.append(int(token))
+```
+
+**Problem:** `"-5".isdigit()` returns `False`, so negative numbers get treated as operators, causing crashes.
+
+### Why Training Looked Good But Evaluation Failed
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  DURING TRAINING (99% success)                                      │
+│                                                                     │
+│  • Generated 8 samples per problem (4 policy + 4 momentum)          │
+│  • If ANY sample worked, counted as "success"                       │
+│  • Some samples likely produced standalone functions                │
+│  • Those got high rewards, contributed to gradient                  │
+│  • But model didn't FULLY learn to avoid class wrappers             │
+│                                                                     │
+│  This is a SAMPLING vs GREEDY discrepancy!                          │
+└─────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────┐
+│  DURING EVALUATION (10% accuracy)                                   │
+│                                                                     │
+│  • Generated 1 sample per problem (greedy)                          │
+│  • Model's most likely output = class Solution wrapper              │
+│  • No second chances                                                │
+│  • Result: 90% of outputs were invalid                              │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Fixes Needed for Experiment 16
+
+1. **Prompt Engineering**: Explicitly say "Write ONLY a standalone function, NOT a class"
+
+2. **Code Extraction**: Update `extract_code()` to handle class wrappers:
+   ```python
+   def extract_code(completion: str) -> str:
+       # If class Solution found, extract the method
+       if "class Solution:" in completion:
+           # Extract method and convert to standalone function
+           ...
+   ```
+
+3. **Test Case Diversity**: Include negative numbers in RPN test cases
+
+4. **Reward Shaping**: Penalize outputs with "class Solution"
 
 ---
 
