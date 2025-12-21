@@ -1,0 +1,147 @@
+{
+  "step": 10,
+  "metrics_history": [
+    {
+      "loss": 0.0,
+      "mean_reward": 0.0,
+      "mean_entropy": 0.38491385323660715,
+      "filtered_count": 2,
+      "success_rate": 0.0
+    },
+    {
+      "loss": 0.0,
+      "mean_reward": 0.0,
+      "mean_entropy": 0.61053466796875,
+      "filtered_count": 0,
+      "success_rate": 0.0
+    },
+    {
+      "loss": 0.0,
+      "mean_reward": 0.0,
+      "mean_entropy": 0.47898763020833335,
+      "filtered_count": 1,
+      "success_rate": 0.0
+    },
+    {
+      "loss": 0.0,
+      "mean_reward": 0.0,
+      "mean_entropy": 0.45204925537109375,
+      "filtered_count": 0,
+      "success_rate": 0.0
+    },
+    {
+      "loss": 0.0,
+      "mean_reward": 0.0,
+      "mean_entropy": 0.6786575317382812,
+      "filtered_count": 0,
+      "success_rate": 0.0
+    },
+    {
+      "loss": 0.0,
+      "mean_reward": 0.0,
+      "mean_entropy": 0.3781585693359375,
+      "filtered_count": 0,
+      "success_rate": 0.0
+    },
+    {
+      "loss": 0.0,
+      "mean_reward": 0.0,
+      "mean_entropy": 0.859375,
+      "filtered_count": 0,
+      "success_rate": 0.0
+    },
+    {
+      "loss": 0.0,
+      "mean_reward": 0.0,
+      "mean_entropy": 0.4741908482142857,
+      "filtered_count": 2,
+      "success_rate": 0.0
+    },
+    {
+      "loss": 0.0,
+      "mean_reward": 0.0,
+      "mean_entropy": 0.5589370727539062,
+      "filtered_count": 0,
+      "success_rate": 0.0
+    },
+    {
+      "loss": 0.0,
+      "mean_reward": 0.0,
+      "mean_entropy": 0.40117645263671875,
+      "filtered_count": 0,
+      "success_rate": 0.0
+    }
+  ],
+  "entropy_history": [
+    {
+      "mean": 0.38491385323660715,
+      "std": 0.1137361102345816,
+      "min": 0.2366943359375,
+      "max": 0.68359375,
+      "filtered": 2
+    },
+    {
+      "mean": 0.61053466796875,
+      "std": 0.35979121921716173,
+      "min": 0.290771484375,
+      "max": 1.8408203125,
+      "filtered": 0
+    },
+    {
+      "mean": 0.47898763020833335,
+      "std": 0.17473560220700052,
+      "min": 0.296630859375,
+      "max": 1.0185546875,
+      "filtered": 1
+    },
+    {
+      "mean": 0.45204925537109375,
+      "std": 0.36443912457427513,
+      "min": 0.2073974609375,
+      "max": 1.80859375,
+      "filtered": 0
+    },
+    {
+      "mean": 0.6786575317382812,
+      "std": 0.5605517845217103,
+      "min": 0.2442626953125,
+      "max": 2.109375,
+      "filtered": 0
+    },
+    {
+      "mean": 0.3781585693359375,
+      "std": 0.1361969792141997,
+      "min": 0.26220703125,
+      "max": 0.81591796875,
+      "filtered": 0
+    },
+    {
+      "mean": 0.859375,
+      "std": 0.6189675374974695,
+      "min": 0.3046875,
+      "max": 2.140625,
+      "filtered": 0
+    },
+    {
+      "mean": 0.4741908482142857,
+      "std": 0.15896269170252877,
+      "min": 0.3271484375,
+      "max": 1.0107421875,
+      "filtered": 2
+    },
+    {
+      "mean": 0.5589370727539062,
+      "std": 0.39861944013281264,
+      "min": 0.1966552734375,
+      "max": 1.947265625,
+      "filtered": 0
+    },
+    {
+      "mean": 0.40117645263671875,
+      "std": 0.12311912843903652,
+      "min": 0.2235107421875,
+      "max": 0.6552734375,
+      "filtered": 0
+    }
+  ]
+}

@@ -56,7 +56,10 @@ class TestHarness:
         # Serialize test cases
         test_cases_json = json.dumps(
             [
-                {"input": tc.input, "expected": tc.expected_output}
+                {
+                    "input": getattr(tc, 'input', None) or getattr(tc, 'input_args', None),
+                    "expected": tc.expected_output
+                }
                 for tc in problem.test_cases
             ]
         )

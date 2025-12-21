@@ -5,6 +5,16 @@ from .lora_config import get_lora_config, get_training_args
 from .trainer import LoRASFTTrainer
 from .grpo_config import GRPOConfig
 from .grpo_trainer import GRPOTrainer
+from .mgrpo_config import MGRPOConfig
+from .mgrpo_trainer import MGRPOTrainer
+from .entropy_utils import (
+    EntropyTracker,
+    EntropyMetrics,
+    compute_trajectory_entropy,
+    compute_batch_entropy,
+    iqr_filter,
+    compute_entropy_metrics,
+)
 from .curriculum import (
     CurriculumScheduler,
     CurriculumConfig,
@@ -21,6 +31,16 @@ __all__ = [
     "LoRASFTTrainer",
     "GRPOConfig",
     "GRPOTrainer",
+    # M-GRPO
+    "MGRPOConfig",
+    "MGRPOTrainer",
+    "EntropyTracker",
+    "EntropyMetrics",
+    "compute_trajectory_entropy",
+    "compute_batch_entropy",
+    "iqr_filter",
+    "compute_entropy_metrics",
+    # Curriculum
     "CurriculumScheduler",
     "CurriculumConfig",
     "CurriculumStrategy",
