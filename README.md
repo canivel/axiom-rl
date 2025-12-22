@@ -381,36 +381,6 @@ Successfully trained **M-GRPO (Momentum-Anchored GRPO)** - a stabilized reinforc
 ╚════════════════════════════════════════════════════════════════════════════╝
 ```
 
-**Complete Training Results (20 Steps):**
-
-| Step | Loss | Reward | Entropy | Success | Val Acc | Key Event |
-|------|------|--------|---------|---------|---------|-----------|
-| 0 | 0.221 | 1.000 | 0.321 | 100% | 60% | Training starts |
-| 5 | 0.138 | 1.000 | 0.295 | 100% | 40% | Strong learning |
-| 10 | 0.258 | 0.200 | 0.229 | 100% | 80% | Brief dip |
-| 11 | 0.172 | 1.000 | **0.163** | 100% | **0%** | ⚠️ Near-collapse |
-| 15 | 0.143 | 1.000 | 0.280 | 100% | 80% | ✅ Recovery! |
-| 19 | 0.191 | 1.000 | 0.229 | 100% | 40% | Final step |
-
-**Hypotheses Tested:**
-
-| Hypothesis | Result | Evidence |
-|------------|--------|----------|
-| H1: Momentum stabilizes training | ✅ **CONFIRMED** | No catastrophic collapse |
-| H2: IQR filtering prevents collapse | ✅ **CONFIRMED** | Recovered from entropy dip at Step 11 |
-| H3: Extended learning | ⚠️ **PARTIAL** | Loss improved, val accuracy flat |
-
-**Problem Type Performance:**
-
-| Problem | Success Rate | Notes |
-|---------|--------------|-------|
-| RPN Evaluator | 100% | ✅ Mastered |
-| Valid Parentheses | 100% | ✅ Mastered |
-| Binary Search | 100% | ✅ Mastered |
-| Coin Change | 100% | ✅ Mastered |
-| Fibonacci | 91% | ✅ Mostly mastered |
-| Edit Distance | 50% | ⚠️ Needs curriculum |
-
 **Key Learnings:**
 1. **M-GRPO Works**: Momentum anchor prevented mode collapse that kills vanilla GRPO
 2. **Partial Rewards Critical**: Binary rewards gave 0 signal; proportional rewards enabled learning
@@ -418,20 +388,79 @@ Successfully trained **M-GRPO (Momentum-Anchored GRPO)** - a stabilized reinforc
 4. **Critical Bug Found**: Model outputs `class Solution` wrappers instead of standalone functions
 5. **Sampling vs Greedy**: 99% success with 8 samples ≠ 10% success with greedy decoding
 
-**Bug Fix Needed for Experiment 16:**
-```python
-# Update extract_code() to handle class wrappers
-if "class Solution:" in completion:
-    # Extract method and convert to standalone function
+---
+
+### Experiment 16: M-GRPO with Class Wrapper Fix ✅ COMPLETE
+
+**Status:** Complete | [Full Report](experiments/16_mgrpo_class_fix/README.md) | Hardware: NVIDIA RTX 3080 (Local)
+
+Fixed the critical bug from Experiment 15 - **5x accuracy improvement!**
+
+```
+╔════════════════════════════════════════════════════════════════════════════╗
+║                     EXPERIMENT 16 - MAJOR SUCCESS                           ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║  Duration: 339.1 minutes (20 steps on RTX 3080)                             ║
+║  Final Eval Accuracy: 50% (15/30) ← 5x better than Exp 15!                  ║
+║  Training Success: 75-100% per step                                         ║
+║  Final Entropy: 0.326 (healthy - NO COLLAPSE!)                              ║
+║  Greedy Peak: 70% at Step 15                                                ║
+╚════════════════════════════════════════════════════════════════════════════╝
 ```
 
-```bash
-# Run M-GRPO training (Colab-ready)
-uv run python scripts/run_mgrpo.py --experiment 15_mgrpo_entropy --steps 20 --eval-every 2
+**Comparison: Experiment 15 vs Experiment 16:**
 
-# Resume from checkpoint
-uv run python scripts/run_mgrpo.py --experiment 15_mgrpo_entropy --steps 20 \
-    --resume experiments/15_mgrpo_entropy/checkpoints/default/checkpoint_step_10
+| Metric | Exp 15 | Exp 16 | Change |
+|--------|--------|--------|--------|
+| **Final Accuracy** | 10% | **50%** | **+40%** |
+| Fibonacci | 0% | **100%** | Fixed |
+| Binary Search | 60% | **100%** | +40% |
+| Coin Change | 0% | **80%** | Fixed |
+| RPN | 60% | 0% | Regressed |
+| Parentheses | 0% | 20% | +20% |
+| Edit Distance | 0% | 0% | Same |
+
+**Key Fixes Applied:**
+
+1. **Class Wrapper Extraction** (`extract_method_from_class`):
+   ```python
+   # Converts "class Solution: def foo(self, x)" → "def foo(x)"
+   # Removes 'self' parameter and 'self.' calls
+   ```
+
+2. **Improved Prompts**:
+   ```
+   Write ONLY a standalone Python function.
+   Do NOT wrap it in a class.
+   Do NOT use 'class Solution'.
+   ```
+
+3. **Greedy Evaluation During Training**:
+   - Periodic greedy eval catches format issues early
+   - Step 15 hit 70% greedy accuracy (Fibonacci 4/4, Binary Search 2/2)
+
+4. **Bug Fix**: Removed `torch.no_grad()` from `compute_log_probs` (was blocking gradients)
+
+**Training Dynamics:**
+
+| Step | Loss | Reward | Entropy | Success | Val Acc |
+|------|------|--------|---------|---------|---------|
+| 0 | 95.28 | 0.750 | 0.375 | 75% | 20% |
+| 6 | 29.66 | 0.500 | 0.428 | 50% | 40% |
+| 12 | 40.89 | 0.750 | 0.338 | 75% | **60%** |
+| 17 | 19.12 | 0.800 | 0.171 | **100%** | 40% |
+| 19 | 33.25 | 0.900 | 0.326 | **100%** | 60% |
+
+**Lessons Learned:**
+
+1. **Output Format Matters**: 99% training success meant nothing with wrong output format
+2. **Greedy Eval Essential**: Sampling hides format issues; greedy reveals them
+3. **Explicit Negative Instructions Work**: "Do NOT" more effective than implicit expectations
+4. **Extraction > Retraining**: Work with model's learned behavior when possible
+
+```bash
+# Run Experiment 16
+uv run python scripts/run_mgrpo_exp16.py --steps 20 --eval-every 2 --greedy-eval-every 5
 ```
 
 ---

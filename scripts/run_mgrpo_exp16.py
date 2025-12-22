@@ -715,9 +715,9 @@ def compute_log_probs(model, tokenizer, prompt: str, completion: str) -> torch.T
 
     prompt_tokens = tokenizer(prompt, return_tensors="pt")["input_ids"].shape[1]
 
-    with torch.no_grad():
-        outputs = model(**inputs)
-        logits = outputs.logits
+    # NOTE: No torch.no_grad() here - we need gradients for training!
+    outputs = model(**inputs)
+    logits = outputs.logits
 
     shift_logits = logits[:, prompt_tokens-1:-1, :]
     shift_labels = inputs["input_ids"][:, prompt_tokens:]
