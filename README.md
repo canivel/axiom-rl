@@ -465,6 +465,75 @@ uv run python scripts/run_mgrpo_exp16.py --steps 20 --eval-every 2 --greedy-eval
 
 ---
 
+### Experiment 17: Internal RL with Temporal Abstractions 🚧 IN PROGRESS
+
+**Status:** Implementation Complete | [Full Report](experiments/17_internal_rl_temporal_abstractions/README.md)
+
+Based on: ["Emergent temporal abstractions in autoregressive models enable hierarchical reinforcement learning"](https://arxiv.org/abs/2512.20605) (Kobayashi et al., Google, Dec 2025)
+
+Implementing **Internal RL** - a hierarchical RL approach that explores in abstract action space instead of token space.
+
+```
+╔════════════════════════════════════════════════════════════════════════════╗
+║                     EXPERIMENT 17 - INTERNAL RL                            ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║                                                                            ║
+║  THE PROBLEM: Token-by-token RL is inefficient for sparse rewards          ║
+║  ─────────────────────────────────────────────────────────────────         ║
+║  Standard RL: Explore 50K vocabulary × 100 tokens = MASSIVE search space   ║
+║  Internal RL: Explore 16D latent space × 5 abstract actions = TRACTABLE    ║
+║                                                                            ║
+║  KEY INSIGHT: Pretrained models have temporally-abstract representations   ║
+║  that can be leveraged for efficient hierarchical exploration!             ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+```
+
+**Core Innovation:**
+
+Instead of doing RL on individual tokens, we:
+1. **Discover** temporally-abstract actions (like "write base case", "write loop") in the residual stream
+2. **Explore** in the abstract action space (16D vs 50K tokens)
+3. **Execute** each abstract action generates multiple tokens until switching
+
+**Three-Phase Training:**
+
+| Phase | What | Trainable | Data |
+|-------|------|-----------|------|
+| 1. Pretrain | Base model learns action prediction | Base model | Expert trajectories |
+| 2. Metacontroller | Discover abstract actions | Metacontroller | Same data, model frozen |
+| 3. Internal RL | Learn abstract action policy | Policy only | RL from rewards |
+
+**Expected Benefits:**
+
+| Aspect | Token-Level RL (Exp 15-16) | Internal RL (Exp 17) |
+|--------|---------------------------|---------------------|
+| Action space | 50K+ tokens | 16D continuous |
+| Effective horizon | ~100 tokens | ~5 abstract actions |
+| Credit assignment | Very hard | Tractable |
+
+**Expected Results (vs Exp 16):**
+
+| Problem Type | Exp 16 | Exp 17 (Expected) |
+|--------------|--------|-------------------|
+| Fibonacci | 100% | 100% |
+| Binary Search | 100% | 100% |
+| Coin Change | 80% | 90%+ |
+| RPN | 0% | 60%+ |
+| Edit Distance | 0% | 40%+ |
+| Parentheses | 20% | 50%+ |
+
+```bash
+# Phase 2: Train metacontroller
+uv run python experiments/17_internal_rl_temporal_abstractions/train_metacontroller.py
+
+# Phase 3: Internal RL
+uv run python experiments/17_internal_rl_temporal_abstractions/internal_rl.py \
+    --metacontroller_path models/metacontroller_best.pt
+```
+
+---
+
 ### Upcoming Phases
 
   - [x] **Phase 9: Teacher Distillation for Hard Problems** ✅ COMPLETED
