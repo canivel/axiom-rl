@@ -292,6 +292,59 @@ uv run python scripts/test_hard_problems.py --model Qwen/Qwen2.5-Coder-0.5B-Inst
 
 ---
 
+## Project Conclusion: Beyond Post-Training
+
+After 17 experiments exploring RLVR, GRPO, teacher distillation, and hierarchical RL, I've reached a conclusion:
+
+**Post-training alone will not make AI safe or aligned.**
+
+We achieved real results - teaching a 0.5B model new algorithms, going from 0% to 100% on Edit Distance, preventing catastrophic forgetting. But the deeper I went, the clearer it became: we're optimizing behavior without understanding what's happening inside.
+
+Post-training is behavior shaping. It tells the model "do this, not that" through rewards. But:
+- We don't know *why* the model succeeds or fails
+- We can't predict when it will generalize vs memorize
+- We discovered capacity walls we couldn't explain (N-Queens at 1.5B threshold)
+- Format bugs hid behind 99% success metrics
+
+**The fundamental problem**: We're training black boxes. RLVR verifies outputs, not reasoning. A model can pass all tests while developing internal representations we don't understand and can't trust.
+
+### What's Next: Pragmatic Interpretability
+
+My next research direction shifts from *training* to *understanding*. Two frameworks guide this:
+
+**1. Pragmatic Interpretability** (Neel Nanda)
+> "The goal is not to understand everything about neural networks. The goal is to understand enough to make AI go well."
+
+See: [A Pragmatic Vision for Interpretability](https://www.alignmentforum.org/posts/StENzDcD3kpfGJssR/a-pragmatic-vision-for-interpretability)
+
+Key insights:
+- Focus on safety-relevant understanding, not complete mechanistic explanations
+- Build tools that work in practice, not just in theory
+- Prioritize interpretability that enables intervention
+
+**2. Compression Theory** (Professor Yi Ma)
+> Neural networks learn compressed representations. Understanding the structure of these representations may unlock interpretability.
+
+See: [ICLR 2025 Invited Talk](https://iclr.cc/virtual/2025/invited-talk/36785)
+
+Key insights:
+- Representations have mathematical structure (low-rank, sparse)
+- Compression principles may explain emergent capabilities
+- Information-theoretic view of what models learn
+
+### The Shift
+
+| This Project (axiom-rl) | Next Project |
+|-------------------------|--------------|
+| Train better behavior | Understand internal structure |
+| Verify outputs | Interpret representations |
+| Post-training | Pre-deployment analysis |
+| "Does it work?" | "Why does it work?" |
+
+Post-training gave us tools. Interpretability may give us trust.
+
+---
+
 ## Author
 
 **Danilo Canivel**
